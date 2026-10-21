@@ -1,0 +1,4 @@
+Paciência máxima do cliente (turnos): deve tornar o jogo desafiador mas jogável.
+Número de clientes por partida: determina a duração da sessão.
+Validade dos ingredientes perecíveis (turnos): pode ser diferente por ingrediente.
+Tamanho da tabela hash (m) e função de hash: justificar em função do número esperado de pedidos.

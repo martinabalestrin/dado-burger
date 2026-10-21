@@ -1,0 +1,3 @@
+A opção Como jogar exibe uma tela estática com as regras básicas: o objetivo do jogo, a lista de
+ingredientes e seus símbolos (conforme Tabela 1), as ações disponíveis e o que cada uma consome
+de turno, e as condições de vitória e derrota. Não há interação além de retornar ao menu.
