@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "build dado_burger",
+            "command": "/usr/bin/clang",
+            "args": [
+                "-fcolor-diagnostics",
+                "-fansi-escape-codes",
+                "-g",
+                "-Wall",
+                "-std=c99",
+                "${workspaceFolder}/src/*.c",
+                "-lm",
+                "-o",
+                "${workspaceFolder}/build/dado_burger"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compila todos os .c de src/ em build/dado_burger (Apêndice C)."
+        }
+    ]
+}

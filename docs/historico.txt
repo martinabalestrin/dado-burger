@@ -1,3 +1,0 @@
-O histórico registra em arquivo o nome e a pontuação de cada jogo encerrado. Ao abrir o histórico,
-o usuário pode ordenar por ordem alfabética ou por pontuação decrescente. O código de
-um algoritmo de ordenação eficiente foi dado em aula; o grupo escolhe qual usar e deve

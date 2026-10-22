@@ -1,9 +1,0 @@
-Papel no jogo Estrutura(s)
-Armazenamento e busca de pedidos AVL
-Histórico de partidas Lista contígua
-Cache de buscas recentes Tabela hash
-Receita e montagem do pedido Lista encadeada + Pilha
-Fila de atendimento Fila (FIFO)
-Estoque de ingredientes perecíveis Heap mínimo
-Ordenação do histórico Um algoritmo (à escolha)
-Medição de tempo timer.h / timer.c

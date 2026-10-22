@@ -1,9 +1,19 @@
-# IDE
-/.vscode
+# IDE — versiona tasks.json e launch.json (compartilhados), ignora config pessoal
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
 
 # Build
 build/
 *.dSYM/
+dado_burger
+
+# Arquivos de entrada/saída (fornecidos ou gerados em runtime)
+pedidos.txt
+pedidos_final.txt
+historico.txt
+historico_final.txt
+medicoes.log
 
 # Configuration and metadata files
 *.plist
