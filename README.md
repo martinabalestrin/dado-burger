@@ -25,27 +25,13 @@ Os módulos (`avl.c/.h`, `hash.c/.h`, `heap.c/.h`, `pilha.c/.h`, `fila.c/.h`, `l
 
 ---
 
-## Compilação e execução
-
-Conforme o **Apêndice C** da especificação:
+## Executar em desenvolvimento
 
 ```bash
-# Compilar (todos os .c de src/ → build/dado_burger)
-clang -Wall -std=c99 src/*.c -lm -o build/dado_burger
-# ou: gcc -Wall -std=c99 src/*.c -lm -o build/dado_burger
-
-# Executar (desenvolvimento)
+mkdir -p build &&
+clang -Wall -std=c99 src/main.c src/menu/menu.c -lm -o build/dado_burger &&
 ./build/dado_burger pedidos.txt historico.txt
-
-# Executar (apresentação — arquivos divulgados no dia)
-./build/dado_burger pedidos_final.txt historico_final.txt
 ```
-
-Os nomes dos arquivos são recebidos via `argv[1]` e `argv[2]` — **não** há nomes fixos.
-Na primeira execução `historico.txt` pode não existir: o programa trata como histórico vazio.
-
-**VS Code:** `tasks.json` já compila o projeto inteiro e `launch.json` roda/depura com os
-dois argumentos — basta `F5`. (A pasta `.vscode/` é local, não versionada.)
 
 ---
 

@@ -5,6 +5,7 @@
             "type": "shell",
             "label": "build dado_burger",
             "command": "/usr/bin/clang",
+            "dependsOn": "create build directory",
             "args": [
                 "-fcolor-diagnostics",
                 "-fansi-escape-codes",
@@ -24,9 +25,47 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
             "detail": "Compila todos os .c de src/ em build/dado_burger (Apêndice C)."
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: clang arquivo de build ativo",
+            "command": "/usr/bin/clang",
+            "dependsOn": "create build directory",
+            "args": [
+                "-fcolor-diagnostics",
+                "-fansi-escape-codes",
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/build/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Tarefa gerada pelo Depurador."
+        },
+        {
+            "type": "shell",
+            "label": "create build directory",
+            "command": "mkdir",
+            "args": [
+                "-p",
+                "${workspaceFolder}/build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
         }
     ]
 }
