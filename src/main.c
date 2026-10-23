@@ -1,52 +1,35 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-// PROTÓTIPOS TEMPORÁRIOS
-void novo_jogo(){};
-void como_jogar(){};
-void ver_historico(){};
+int main(int argc, char *argv[]) {
+    // argv[0] = nome do programa
+    // argv[1] = caminho relativo do arquivo com pedidos
+    // argv[2] = caminho relativo do arquivo com histórico
 
-void limpar_tela() {
-    // Verifica se é Windows
-    #if defined(_WIN32) || defined(_WIN64)
-        system("cls");
-    #else
-        // Mac e Linux
-        system("clear");
-    #endif
-}
+    if (argc < 3) {
+        fprintf(stderr, "Erro: argumentos insuficientes\n");
+        fprintf(stderr, "Uso correto: %s <pedidos.txt> <historico.txt>\n", argv[0]);
+        
+        return 1;
+    }
+    
+    FILE *fpedidos = fopen(argv[1], "r");
+    if (fpedidos == NULL) {
+        perror(argv[1]);
+        return 1;
+    }
 
-int main() {
-    // TELA DE INÍCIO
-    int escolha;
+    FILE *fhistorico = fopen(argv[2], "a+");
+    if (fhistorico == NULL) {
+        perror(argv[2]);
+        fclose(fpedidos);
+        return 1;
+    }
 
-    do {
-        limpar_tela();
-        printf("===== DADO BURGUER =====\n\n");
-        printf("1. Novo Jogo\n");
-        printf("2. Como jogar\n");
-        printf("3. Histórico\n\n");
+    // ...
 
-        printf("Escolha: ");
-        scanf("%d", &escolha);
-
-        switch(escolha) {
-            case 1:
-                novo_jogo();
-                break;
-            case 2:
-                como_jogar();
-                break;
-            case 3:
-                ver_historico();
-                break;
-            default:
-                printf("Opção inválida! Pressione Enter para tentar novamente.");
-                while(getchar() != '\n');
-                getchar();
-                break;
-        }
-    } while (escolha < 1 || escolha > 3);
+    // no fim do código
+    fclose(fpedidos);
+    fclose(fhistorico);
 
     return 0;
 }
