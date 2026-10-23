@@ -14,6 +14,7 @@ dado-burguer/
 ├── src/              # código-fonte (.c e .h) — um módulo por estrutura
 │   └── main.c
 ├── build/            # artefatos de compilação (ignorado no git)
+├── run.sh            # compila todos os módulos e executa o projeto
 ├── .vscode/          # tasks.json (build) e launch.json (run/debug) — config local
 ├── ISSUES.md         # lista de issues (espelho das issues do GitHub)
 ├── trab_final.pdf    # especificação
@@ -25,13 +26,39 @@ Os módulos (`avl.c/.h`, `hash.c/.h`, `heap.c/.h`, `pilha.c/.h`, `fila.c/.h`, `l
 
 ---
 
-## Executar em desenvolvimento
+## Compilação e execução
+
+Na raiz do projeto, use o script `run.sh` (requer Bash e Clang):
 
 ```bash
-mkdir -p build &&
-clang -Wall -std=c99 src/main.c src/menu/menu.c -lm -o build/dado_burger &&
-./build/dado_burger pedidos.txt historico.txt
+# Apenas compilar, sem iniciar o programa
+./run.sh --build-only
+
+# Compilar e executar
+./run.sh pedidos.txt historico.txt
 ```
+
+O script cria `build/` se necessário, encontra todos os arquivos `.c` em `src/`
+(inclusive subpastas) e recompila o executável `build/dado_burger` a cada chamada,
+com `-Wall -std=c99` e `-lm`. Não é necessário listar os módulos manualmente.
+Se a compilação falhar, o programa não é executado.
+
+Por padrão, o compilador é o Clang. Para usar GCC, por exemplo:
+
+```bash
+CC=gcc ./run.sh --build-only
+```
+
+Se aparecer `permission denied`, use `bash run.sh` (ou `bash run.sh --build-only`),
+ou conceda permissão uma vez com `chmod +x run.sh`.
+
+Os argumentos são repassados ao programa sem alteração. Conforme o **Apêndice C**,
+os arquivos de pedidos e histórico devem ser recebidos via `argv[1]` e `argv[2]`,
+sem nomes fixos; esse uso depende da implementação da entrada por linha de comando
+(issue #1). O script não lê nem valida esses arquivos.
+
+**VS Code:** `tasks.json` já compila o projeto inteiro e `launch.json` roda/depura com os
+dois argumentos — basta `F5`. (A pasta `.vscode/` é local, não versionada.)
 
 ---
 
