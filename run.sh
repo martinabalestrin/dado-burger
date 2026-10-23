@@ -19,5 +19,10 @@ if ((${#sources[@]} == 0)); then
 fi
 
 "$COMPILER" -Wall -std=c99 "${sources[@]}" -lm -o "$EXECUTABLE"
+if [[ "${1:-}" == "--build-only" ]]; then
+    printf 'Build concluido: %s\n' "$EXECUTABLE"
+    exit 0
+fi
+
 cd "$ROOT_DIR"
 exec "$EXECUTABLE" "$@"
