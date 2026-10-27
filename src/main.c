@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "medicoes/medicoes.c"
+#include "medicoes/medicoes.h"
 
 int main(int argc, char *argv[]) {
 
