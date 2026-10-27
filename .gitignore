@@ -3,6 +3,9 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 
+# GitHub configuration
+.github/*
+
 # Build
 build/
 *.dSYM/
