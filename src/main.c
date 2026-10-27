@@ -1,9 +1,8 @@
 #include <stdio.h>
 
+#include "medicoes/medicoes.c"
+
 int main(int argc, char *argv[]) {
-    // argv[0] = nome do programa
-    // argv[1] = caminho relativo do arquivo com pedidos
-    // argv[2] = caminho relativo do arquivo com histórico
 
     if (argc < 3) {
         fprintf(stderr, "Erro: argumentos insuficientes\n");
@@ -25,9 +24,21 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    Medicoes medicoes;
+
+    if (inicializarMedicoes(&medicoes) != 0) {
+        fprintf(stderr, "Erro ao inicializar arquivo de medições\n");
+        return 1;
+    }
+
     // ...
 
     // no fim do código
+    if (fecharMedicoes(&medicoes) != 0) {
+        fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
+        return 1;
+    }
+
     fclose(fpedidos);
     fclose(fhistorico);
 
