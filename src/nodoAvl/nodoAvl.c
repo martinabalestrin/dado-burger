@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "nodoAvl.h"
 
@@ -157,4 +158,40 @@ NodoAvl* avlDestruir(NodoAvl *raiz) {
     free(raiz->dado.ordem);
     free(raiz);
     return NULL;
+}
+
+NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
+
+    FILE *fpedidos = fopen(nomeArquivo, "r");
+    if (fpedidos == NULL) {
+        perror(nomeArquivo);
+        return NULL;
+    }
+    
+    int codigo;
+    char buffer[256];
+
+    while (fscanf(fpedidos, "%d %255s", &codigo, buffer) == 2) {
+        char *ordem = malloc(strlen(buffer) + 1);
+        if (ordem == NULL) {
+            printf("Erro: Memória insuficiente!\n");
+            return NULL;
+        }
+        else strcpy(ordem, buffer);
+
+        Receita receita = {codigo, ordem};
+        raiz = avlInserir(raiz, receita);
+    }
+
+    fclose(fpedidos);
+    return raiz;
+}
+
+Receita buscarPedido(NodoAvl *raiz, int codigo) {
+    NodoAvl *pedidoNodo = avlBuscar(raiz, codigo);
+    if (pedidoNodo == NULL) {
+        printf("Erro: Pedido não encontrado.\n");
+        return (Receita){0};
+    }
+    else return pedidoNodo->dado;
 }

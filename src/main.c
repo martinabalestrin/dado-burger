@@ -6,8 +6,6 @@
 #include "medicoes/medicoes.h"
 #include "nodoAvl/nodoAvl.h"
 
-NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]);
-
 int main(int argc, char *argv[]) {
 
     if (argc < 3) {
@@ -25,6 +23,12 @@ int main(int argc, char *argv[]) {
         printf("Erro: Carregamento de pedidos.\n");
         return 1; 
     }
+
+    // Ex.: Buscar receita na AVL
+    // Receita receita = buscarPedido(pedidos, 0);
+    // debug:
+    // printf("%d %s\n", receita.cod, receita.ordem);
+
 
     FILE *fhistorico = fopen(argv[2], "a+");
     if (fhistorico == NULL) {
@@ -50,31 +54,4 @@ int main(int argc, char *argv[]) {
     fclose(fhistorico);
 
     return 0;
-}
-
-NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
-
-    FILE *fpedidos = fopen(nomeArquivo, "r");
-    if (fpedidos == NULL) {
-        perror(nomeArquivo);
-        return NULL;
-    }
-    
-    int codigo;
-    char buffer[256];
-
-    while (fscanf(fpedidos, "%d %255s", &codigo, buffer) == 2) {
-        char *ordem = malloc(strlen(buffer) + 1);
-        if (ordem == NULL) {
-            printf("Erro: Memória insuficiente!\n");
-            return NULL;
-        }
-        else strcpy(ordem, buffer);
-
-        Receita receita = {codigo, ordem};
-        raiz = avlInserir(raiz, receita);
-    }
-
-    fclose(fpedidos);
-    return raiz;
 }
