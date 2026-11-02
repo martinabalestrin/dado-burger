@@ -2,9 +2,10 @@
 
 #include "nodoAvl.h"
 
-// Retorna 0 para folha e -1 para NULL
+// Retorna 1 para folha e 0 para NULL
 int avlAltura(const NodoAvl *no) {
-    if (no == NULL) return -1;
+    if (no == NULL) return 0;
+    if (no->esq == NULL && no->dir == NULL) return 1;
     return no->altura;
 }
 
