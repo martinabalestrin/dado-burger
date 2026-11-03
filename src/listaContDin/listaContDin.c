@@ -50,20 +50,21 @@ void removerLCD(ListaContDin *l, int pos) {
 }
 
 void carregarHistorico(ListaContDin *lista, char nomeArquivo[]) {
-    FILE *fhistorico = fopen(nomeArquivo, "a+");
+    FILE *fhistorico = fopen(nomeArquivo, "r");
     if (fhistorico == NULL) {
-        perror(nomeArquivo);
         return;
     }
 
     int pontuacao;
     char nome[21];
 
-    while (fscanf(fhistorico, "%20s %d", nome, &pontuacao) == 2) {
-        Partida partida;
-        partida.pontuacao = pontuacao;
-        strcpy(partida.nome, nome);
-        inserirLCD(lista, partida);
+    while (fscanf(fhistorico, " %20[^\n]", nome) == 1) {
+        if (fscanf(fhistorico, "%d", &pontuacao) == 1) {
+            Partida partida;
+            partida.pontuacao = pontuacao;
+            strcpy(partida.nome, nome);
+            inserirLCD(lista, partida);
+        }
     }
 
     fclose(fhistorico);
@@ -81,4 +82,35 @@ void salvarHistorico(ListaContDin *lista, Partida nova, char nomeArquivo[]) {
     fclose(fhistorico);
 
     inserirLCD(lista, nova);
+}
+
+// USAR PARA TESTAR O CARREGAMENTO DE HISTÓRICO AGORA MAS PODE APAGAR DEPOIS !!!
+void depurarHistorico(ListaContDin *l) {
+    printf("\n========= DEBUG: HISTORICO DE PARTIDAS =========\n");
+    
+    // CASO 1: Se o ponteiro da lista for nulo
+    if (l == NULL) {
+        printf("[ERRO] A lista passada para o debug eh NULL!\n");
+        printf("================================================\n\n");
+        return;
+    }
+
+    // CASO 2: Se a lista estiver vazia (Usando l->tamanho)
+    if (l->tamanho == 0) {
+        printf("[AVISO] A lista existe, mas esta VAZIA (0 partidas).\n");
+        printf("================================================\n\n");
+        return;
+    }
+
+    // CASO 3: Imprimir os itens (Usando l->tamanho e l->dados)
+    printf("Total de partidas carregadas: %d\n\n", l->tamanho);
+    printf("  # | %-20s | %s\n", "Nome do Jogador", "Pontuacao");
+    printf("------------------------------------------------\n");
+    
+    for (int i = 0; i < l->tamanho; i++) {
+        Partida p = l->dados[i]; 
+        printf(" %2d | %-20s | %d\n", i + 1, p.nome, p.pontuacao);
+    }
+    
+    printf("================================================\n\n");
 }

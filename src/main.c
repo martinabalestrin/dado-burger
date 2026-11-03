@@ -38,6 +38,10 @@ int main(int argc, char *argv[]) {
     inicializarLCD(&historico);
     carregarHistorico(&historico, argv[2]);
 
+    // === LINHA DE DEBUG ===
+    // Chamamos passando o endereço de histórico, pois a função espera um ponteiro simples
+    // depurarHistorico(&historico); 
+
     Medicoes medicoes;
 
     if (inicializarMedicoes(&medicoes) != 0) {
