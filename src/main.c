@@ -5,6 +5,7 @@
 #include "receita.h"
 #include "medicoes/medicoes.h"
 #include "nodoAvl/nodoAvl.h"
+#include "listaContDin/listaContDin.h"
 
 int main(int argc, char *argv[]) {
 
@@ -32,12 +33,10 @@ int main(int argc, char *argv[]) {
     // debug:
     // printf("%d %s\n", receita.cod, receita.ordem);
 
-
-    FILE *fhistorico = fopen(argv[2], "a+");
-    if (fhistorico == NULL) {
-        perror(argv[2]);
-        return 1;
-    }
+    // === Carregar histórico de partidas ===
+    ListaContDin historico;
+    inicializarLCD(&historico);
+    carregarHistorico(&historico, argv[2]);
 
     Medicoes medicoes;
 
@@ -53,8 +52,6 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
         return 1;
     }
-
-    fclose(fhistorico);
 
     return 0;
 }
