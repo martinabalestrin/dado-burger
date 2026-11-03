@@ -1,6 +1,10 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
+#include "receita.h"
 #include "medicoes/medicoes.h"
+#include "nodoAvl/nodoAvl.h"
 
 int main(int argc, char *argv[]) {
 
@@ -11,16 +15,24 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    FILE *fpedidos = fopen(argv[1], "r");
-    if (fpedidos == NULL) {
-        perror(argv[1]);
-        return 1;
+    // === Carregar os pedidos na AVL ===
+    NodoAvl *pedidos = NULL;
+    pedidos = carregarPedidos(pedidos, argv[1]);
+
+    if (pedidos == NULL) {
+        printf("Erro: Carregamento de pedidos.\n");
+        return 1; 
     }
+
+    // Ex.: Buscar receita na AVL
+    // Receita receita = buscarPedido(pedidos, 0);
+    // debug:
+    // printf("%d %s\n", receita.cod, receita.ordem);
+
 
     FILE *fhistorico = fopen(argv[2], "a+");
     if (fhistorico == NULL) {
         perror(argv[2]);
-        fclose(fpedidos);
         return 1;
     }
 
@@ -39,7 +51,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    fclose(fpedidos);
     fclose(fhistorico);
 
     return 0;
