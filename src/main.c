@@ -1,6 +1,11 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
+#include "receita.h"
 #include "medicoes/medicoes.h"
+#include "nodoAvl/nodoAvl.h"
+#include "listaContDin/listaContDin.h"
 
 int main(int argc, char *argv[]) {
 
@@ -11,18 +16,28 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    FILE *fpedidos = fopen(argv[1], "r");
-    if (fpedidos == NULL) {
-        perror(argv[1]);
-        return 1;
+    // === Carregar os pedidos na AVL ===
+    NodoAvl *pedidos = NULL;
+    pedidos = carregarPedidos(pedidos, argv[1]);
+
+    if (pedidos == NULL) {
+        printf("Erro: Carregamento de pedidos.\n");
+        return 1; 
     }
 
-    FILE *fhistorico = fopen(argv[2], "a+");
-    if (fhistorico == NULL) {
-        perror(argv[2]);
-        fclose(fpedidos);
-        return 1;
-    }
+    // Ex.: Buscar receita na AVL
+    // Receita receita = buscarPedido(pedidos, 0);
+    // debug:
+    // printf("%d %s\n", receita.cod, receita.ordem);
+
+    // === Carregar histórico de partidas ===
+    ListaContDin historico;
+    inicializarLCD(&historico);
+    carregarHistorico(&historico, argv[2]);
+
+    // === LINHA DE DEBUG ===
+    // Chamamos passando o endereço de histórico, pois a função espera um ponteiro simples
+    // depurarHistorico(&historico); 
 
     Medicoes medicoes;
 
@@ -38,9 +53,6 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
         return 1;
     }
-
-    fclose(fpedidos);
-    fclose(fhistorico);
 
     return 0;
 }

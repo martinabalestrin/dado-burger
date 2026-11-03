@@ -6,6 +6,16 @@ BUILD_DIR="$ROOT_DIR/build"
 EXECUTABLE="$BUILD_DIR/dado_burger"
 COMPILER="${CC:-clang}"
 
+build_only=false
+args=()
+for arg in "$@"; do
+    if [[ "$arg" == "--build-only" ]]; then
+        build_only=true
+    else
+        args+=("$arg")
+    fi
+done
+
 mkdir -p "$BUILD_DIR"
 
 sources=()
@@ -19,10 +29,10 @@ if ((${#sources[@]} == 0)); then
 fi
 
 "$COMPILER" -Wall -std=c99 "${sources[@]}" -lm -o "$EXECUTABLE"
-if [[ "${1:-}" == "--build-only" ]]; then
+if [[ "$build_only" == true ]]; then
     printf 'Build concluido: %s\n' "$EXECUTABLE"
     exit 0
 fi
 
 cd "$ROOT_DIR"
-exec "$EXECUTABLE" "$@"
+exec "$EXECUTABLE" "${args[@]}"
