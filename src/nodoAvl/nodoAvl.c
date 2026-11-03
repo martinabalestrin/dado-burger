@@ -3,10 +3,9 @@
 
 #include "nodoAvl.h"
 
-// Retorna 1 para folha e 0 para NULL
+// Retorna 0 se for vazia
 int avlAltura(const NodoAvl *no) {
     if (no == NULL) return 0;
-    if (no->esq == NULL && no->dir == NULL) return 1;
     return no->altura;
 }
 
@@ -57,6 +56,8 @@ NodoAvl* avlRotEsq(NodoAvl *x) {
 // Verifica o FB e aplica a rotação correta
 // Usada tanto na inserção quanto na remoção
 NodoAvl* avlReequilibrar(NodoAvl *raiz) {
+    if (raiz == NULL) return NULL;
+    
     avlAtualizarAltura(raiz);
     int fb = avlFb(raiz);
 
@@ -100,7 +101,7 @@ NodoAvl* avlInserir(NodoAvl *raiz, Receita valor) {
         novo->dado   = valor;
         novo->esq    = NULL;
         novo->dir    = NULL;
-        novo->altura = 0;
+        novo->altura = 1;
         return novo;
     }
     if (valor.cod < raiz->dado.cod)
