@@ -17,3 +17,4 @@ void inserirLCD(ListaContDin *l, Partida novo);
 void removerLCD(ListaContDin *l, int pos);
 void carregarHistorico(ListaContDin *lista, char nomeArquivo[]);
 void salvarHistorico(ListaContDin *lista, Partida nova, char nomeArquivo[]);
+void depurarHistorico(ListaContDin *l);
