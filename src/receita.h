@@ -3,7 +3,7 @@
 
 typedef struct {
     int cod;
-    char *ordem;
+    char ordem[8];
 } Receita;
 
 #endif // RECEITA_H

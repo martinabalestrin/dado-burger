@@ -132,13 +132,11 @@ NodoAvl* avlRemover(NodoAvl *raiz, int cod) {
     } else {
         if (raiz->esq == NULL) {
             NodoAvl *filho = raiz->dir;
-            free(raiz->dado.ordem);
             free(raiz);
             return filho;
         }
         if (raiz->dir == NULL) {
             NodoAvl *filho = raiz->esq;
-            free(raiz->dado.ordem);
             free(raiz);
             return filho;
         }
@@ -156,9 +154,24 @@ NodoAvl* avlDestruir(NodoAvl *raiz) {
     if (raiz == NULL) return NULL;
     raiz->esq = avlDestruir(raiz->esq);
     raiz->dir = avlDestruir(raiz->dir);
-    free(raiz->dado.ordem);
     free(raiz);
     return NULL;
+}
+
+static void avlDebugImprimirRecursivo(const NodoAvl *raiz, size_t *total) {
+    if (raiz == NULL) return;
+
+    avlDebugImprimirRecursivo(raiz->esq, total);
+    printf("%d %s\n", raiz->dado.cod, raiz->dado.ordem);
+    (*total)++;
+    avlDebugImprimirRecursivo(raiz->dir, total);
+}
+
+void avlDebugImprimir(const NodoAvl *raiz) {
+    size_t total = 0;
+    printf("Pedidos carregados na AVL (em ordem de código):\n");
+    avlDebugImprimirRecursivo(raiz, &total);
+    printf("Total de pedidos na AVL: %zu\n", total);
 }
 
 NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
@@ -170,17 +183,13 @@ NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
     }
     
     int codigo;
-    char buffer[256];
+    char ordem[8];
 
-    while (fscanf(fpedidos, "%d %255s", &codigo, buffer) == 2) {
-        char *ordem = malloc(strlen(buffer) + 1);
-        if (ordem == NULL) {
-            printf("Erro: Memória insuficiente!\n");
-            return NULL;
-        }
-        else strcpy(ordem, buffer);
+    while (fscanf(fpedidos, "%d %7s", &codigo, ordem) == 2) {
+        Receita receita;
+        receita.cod = codigo;
+        strcpy(receita.ordem, ordem);
 
-        Receita receita = {codigo, ordem};
         raiz = avlInserir(raiz, receita);
     }
 

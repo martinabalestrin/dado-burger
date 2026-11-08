@@ -24,6 +24,9 @@ int main(int argc, char *argv[]) {
         return 1; 
     }
 
+    // Função de debug para a AVL
+    // avlDebugImprimir(pedidos);
+
     // Ex.: Buscar receita na AVL
     // Receita receita = buscarPedido(pedidos, 0);
     // debug:

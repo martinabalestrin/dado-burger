@@ -22,6 +22,7 @@ NodoAvl* avlInserir(NodoAvl *raiz, Receita valor);
 NodoAvl* avlMinimo(NodoAvl *raiz);
 NodoAvl* avlRemover(NodoAvl *raiz, int cod);
 NodoAvl* avlDestruir(NodoAvl *raiz);
+void avlDebugImprimir(const NodoAvl *raiz);
 
 NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]);
 Receita buscarPedido(NodoAvl *raiz, int codigo);
