@@ -16,66 +16,124 @@ int main(){
     */
 
     // dados de teste
-    int id1 = 1, id2 = 2, id3 = 3, id4 = 40;
+    Cliente cliente1 = {1, 10, 1100};
+    Cliente cliente2 = {2, 10, 2200};
+    Cliente cliente3 = {3, 10, 3300};
+    Cliente cliente4 = {4, 10, 4400};
     FilaEnc filaTeste;
 
+    printf("\n||| INÍCIO DOS TESTES |||\n\n");
+
     // inicialização correta
+    printf("- Testes de inicialização - \n");
     inicializa(&filaTeste);
     if(estaVazia(&filaTeste)){
-        printf("Fila criada\n");
+        printf("Teste de inicialização de fila: OK\n");
     }
     if(tamanho(&filaTeste) == 0){
-        printf("Fila vazia\n");
+        printf("Inicialização de fila vazia: OK\n\n");
     }
 
     // enfileirar
-    int elementoDaFrente = 0;
-    enqueue(&filaTeste, id1);
-    frente(&filaTeste, &elementoDaFrente);
-    printf("Frente da fila: %d\n", elementoDaFrente);
-    printf("Tamanho da fila: %d\n\n", tamanho(&filaTeste));
+    printf("- Testes de enfileiramento - \n");
+    printf("Enfileiramento do cliente id #1\n");
+    Cliente clienteDaFrente = {0, 0, 0};
+    enqueue(&filaTeste, cliente1);
+    frente(&filaTeste, &clienteDaFrente);
+    printf("Teste da função frente\nValor esperado: 1\nValor recebido: %d\n", clienteDaFrente.id);
+    if(clienteDaFrente.id == 1){
+        printf("Teste da função frente: OK\n");
+    }
+    printf("Teste da função tamanho\nValor esperado: 1\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 1){
+        printf("Teste da função tamanho: OK\n");
+    }
 
-    enqueue(&filaTeste, id2);
-    frente(&filaTeste, &elementoDaFrente);
-    printf("Frente da fila: %d\n", elementoDaFrente);
-    printf("Tamanho da fila: %d\n\n", tamanho(&filaTeste));
+    printf("\nEnfileiramento do cliente id #2\n");
+    enqueue(&filaTeste, cliente2);
+    frente(&filaTeste, &clienteDaFrente);
+    printf("Teste da função frente\nValor esperado: 1\nValor recebido: %d\n", clienteDaFrente.id);
+    if(clienteDaFrente.id == 1){
+        printf("Teste da função frente: OK\n");
+    }
+    printf("Teste da função tamanho\nValor esperado: 2\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 2){
+        printf("Teste da função tamanho: OK\n");
+    }
 
-    enqueue(&filaTeste, id3);
-    frente(&filaTeste, &elementoDaFrente);
-    printf("Frente da fila: %d\n", elementoDaFrente);
-    printf("Tamanho da fila: %d\n\n", tamanho(&filaTeste));
+    printf("\nEnfileiramento do cliente id #3\n");
+    enqueue(&filaTeste, cliente3);
+    frente(&filaTeste, &clienteDaFrente);
+    printf("Teste da função frente\nValor esperado: 1\nValor recebido: %d\n", clienteDaFrente.id);
+    if(clienteDaFrente.id == 1){
+        printf("Teste da função frente: OK\n");
+    }
+    printf("Teste da função tamanho\nValor esperado: 3\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 3){
+        printf("Teste da função tamanho: OK\n");
+    }
 
     // desenfileirar
-    int elementoRemovido = 0;
-    dequeue(&filaTeste, &elementoRemovido);
-    frente(&filaTeste, &elementoDaFrente);
-    printf("Frente da fila: %d\n", elementoDaFrente);
-    printf("Tamanho da fila: %d\n", tamanho(&filaTeste));
-    printf("Elemento removido: %d\n\n", elementoRemovido);
+    printf("\n- Testes de desenfileiramento - \n");
+    printf("Desenfileiramento do cliente id #1\n");
+    Cliente clienteRemovido = {0, 0, 0};
+    dequeue(&filaTeste, &clienteRemovido);
+    frente(&filaTeste, &clienteDaFrente);
+    printf("Teste da função dequeue\nValor esperado: 2\nValor recebido: %d\n", clienteDaFrente.id);
+    if(clienteDaFrente.id == 2){
+        printf("Teste da função dequeue: OK\n");
+    }
+    printf("Tamanho da fila\nValor esperado: 2\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 2){
+        printf("Atualização do tamanho da fila: OK\n");
+    }
+    printf("Elemento removido: id #%d\n\n", clienteRemovido.id);
 
-    dequeue(&filaTeste, &elementoRemovido);
-    frente(&filaTeste, &elementoDaFrente);
-    printf("Frente da fila: %d\n", elementoDaFrente);
-    printf("Tamanho da fila: %d\n", tamanho(&filaTeste));
-    printf("Elemento removido: %d\n\n", elementoRemovido);
+    printf("Desenfileiramento do cliente id #2\n");
+    dequeue(&filaTeste, &clienteRemovido);
+    frente(&filaTeste, &clienteDaFrente);
+    printf("Teste da função dequeue\nValor esperado: 3\nValor recebido: %d\n", clienteDaFrente.id);
+    if(clienteDaFrente.id == 3){
+        printf("Teste da função dequeue: OK\n");
+    }
+    printf("Tamanho da fila\nValor esperado: 1\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 1){
+        printf("Atualização do tamanho da fila: OK\n");
+    }
+    printf("Elemento removido: id #%d\n\n", clienteRemovido.id);
 
-    dequeue(&filaTeste, &elementoRemovido);
-    if((frente(&filaTeste, &elementoDaFrente)) == 0){
-        printf("Sem elementos na frente\n");
+    printf("Desenfileiramento do último cliente id #3\n");
+    dequeue(&filaTeste, &clienteRemovido);
+    if((frente(&filaTeste, &clienteDaFrente)) == 0){
+        printf("Teste da função dequeue: OK -> Sem elementos na frente\n");
     }
     else{
-        printf("Frente da fila: %d\n", elementoDaFrente);
+        printf("Teste da função dequeue: FALHO -> Frente da fila: %d\n", clienteDaFrente.id);
     }
-    printf("Tamanho da fila: %d\n", tamanho(&filaTeste));
-    printf("Elemento removido: %d\n\n", elementoRemovido);
+    printf("Tamanho da fila\nValor esperado: 0\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 0){
+        printf("Atualização do tamanho da fila: OK\n");
+    }
+    printf("Elemento removido: id #%d\n\n", clienteRemovido.id);
     if(estaVazia(&filaTeste)){
         printf("Fila esvaziada completamente\n");
     }
 
-    enqueue(&filaTeste, id4);
-    frente(&filaTeste, &elementoDaFrente);
-    printf("Frente da fila: %d\n", elementoDaFrente);
-    printf("Tamanho da fila: %d\n\n", tamanho(&filaTeste));
+    // Teste extra de enfileiramento pós-esvaziamento
+    printf("\n- Testes de enfileiramento pós-esvaziamento -\n");
+    printf("Enfileiramento do cliente id #4\n");
+    enqueue(&filaTeste, cliente4);
+    frente(&filaTeste, &clienteDaFrente);
+    printf("Teste da função enqueue/frente\nValor esperado: 4\nValor recebido: %d\n", clienteDaFrente.id);
+    if(clienteDaFrente.id == 4){
+        printf("Teste da função enqueue: OK\n");
+    }
+    printf("Teste da função tamanho\nValor esperado: 1\nValor recebido: %d\n", tamanho(&filaTeste));
+    if(tamanho(&filaTeste) == 1){
+        printf("Atualização do tamanho da fila: OK\n");
+    }
+
+    printf("\n||| FIM DOS TESTES |||\n");
 
 
     return 0;

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fila.h"
+#include "../cliente/cliente.h"
 
 void inicializa(FilaEnc *f){
     f->frente = NULL;
@@ -11,13 +12,13 @@ int estaVazia(const FilaEnc *f){
     return f->frente == NULL;
 }
 
-int enqueue(FilaEnc *f, int cliente){
-    Nodo *novo = (Nodo*) malloc(sizeof(Nodo));
+int enqueue(FilaEnc *f, Cliente cliente){
+    NodoFila *novo = (NodoFila*) malloc(sizeof(NodoFila));
     if (novo == NULL){
         return 0;
     }
 
-    novo->id = cliente;
+    novo->dados = cliente;
     novo->prox = NULL;
 
     if (f->final != NULL){
@@ -31,15 +32,15 @@ int enqueue(FilaEnc *f, int cliente){
     return 1;
 }
 
-int dequeue(FilaEnc *f, int *idRemovido){
-    Nodo *removido;
+int dequeue(FilaEnc *f, Cliente *clienteRemovido){
+    NodoFila *removido;
 
     if (estaVazia(f)){
         return 0;
     }
 
     removido = f->frente;
-    *idRemovido = removido->id;
+    *clienteRemovido = removido->dados;
     f->frente = removido->prox;
 
     if (f->frente == NULL){
@@ -50,17 +51,17 @@ int dequeue(FilaEnc *f, int *idRemovido){
     return 1;
 }
 
-int frente(const FilaEnc *f, int *id){
+int frente(const FilaEnc *f, Cliente *cliente){
     if (estaVazia(f)){
         return 0;
     }
 
-    *id = f->frente->id;
+    *cliente = f->frente->dados;
     return 1;
 }
 
 int tamanho(const FilaEnc *f){
-    Nodo *aux = f->frente;
+    NodoFila *aux = f->frente;
     int contador = 0;
 
     while (aux != NULL) {
