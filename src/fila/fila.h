@@ -15,11 +15,11 @@ typedef struct{
     NodoFila *final;
 } FilaEnc;
 
-void inicializa(FilaEnc *f);
-int estaVazia(const FilaEnc *f);
-int enqueue(FilaEnc *f, Cliente cliente);
-int dequeue(FilaEnc *f, Cliente *clienteRemovido);
-int frente(const FilaEnc *f, Cliente *cliente);
-int tamanho(const FilaEnc *f);
+void inicializaFila(FilaEnc *f);
+int estaVaziaFila(const FilaEnc *f);
+int enqueueFila(FilaEnc *f, Cliente cliente);
+int dequeueFila(FilaEnc *f, Cliente *clienteRemovido);
+int frenteFila(const FilaEnc *f, Cliente *cliente);
+int tamanhoFila(const FilaEnc *f);
 
 #endif
