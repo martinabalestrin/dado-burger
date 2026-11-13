@@ -7,7 +7,7 @@
 #include "nodoAvl/nodoAvl.h"
 #include "listaContDin/listaContDin.h"
 #include "listaEnc/listaEnc.h"
-#include "cliente.h"
+#include "src/cliente/cliente.h"
 #include "fila.h"
 
 int main(int argc, char *argv[]) {
