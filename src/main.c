@@ -6,6 +6,7 @@
 #include "medicoes/medicoes.h"
 #include "nodoAvl/nodoAvl.h"
 #include "listaContDin/listaContDin.h"
+#include "listaEnc/listaEnc.h"
 #include "cliente.h"
 #include "fila.h"
 
@@ -27,6 +28,7 @@ int main(int argc, char *argv[]) {
         return 1; 
     }
 
+    // === LINHA DE DEBUG: AVL ===
     // Função de debug para a AVL
     // avlDebugImprimir(pedidos);
 
@@ -40,9 +42,12 @@ int main(int argc, char *argv[]) {
     inicializarLCD(&historico);
     carregarHistorico(&historico, argv[2]);
 
-    // === LINHA DE DEBUG ===
-    // Chamamos passando o endereço de histórico, pois a função espera um ponteiro simples
+    // === LINHA DE DEBUG: LISTA CONTÍGUA DINÂMICA ===
     // depurarHistorico(&historico); 
+
+    // === LINHA DE DEBUG: LISTA ENCADEADA ===
+    // ListaEnc *meuPedido = criarPedido(buscarPedido(pedidos, 13));
+    // imprimirListaEnc(meuPedido);
 
     Medicoes medicoes;
 
