@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "receita.h"
 #include "medicoes/medicoes.h"
@@ -9,6 +10,7 @@
 #include "listaEnc/listaEnc.h"
 #include "cliente/cliente.h"
 #include "fila/fila.h"
+#include "tabelaHash/tabelaHash.h"
 
 int main(int argc, char *argv[]) {
 
@@ -21,7 +23,8 @@ int main(int argc, char *argv[]) {
     
     // === Carregar os pedidos na AVL ===
     NodoAvl *pedidos = NULL;
-    pedidos = carregarPedidos(pedidos, argv[1]);
+    long qntPedidos = 0;
+    pedidos = carregarPedidos(pedidos, argv[1], &qntPedidos);
 
     if (pedidos == NULL) {
         printf("Erro: Carregamento de pedidos.\n");
@@ -32,10 +35,42 @@ int main(int argc, char *argv[]) {
     // Função de debug para a AVL
     // avlDebugImprimir(pedidos);
 
-    // Ex.: Buscar receita na AVL
-    // Receita receita = buscarPedido(pedidos, 0);
-    // debug:
-    // printf("%d %s\n", receita.cod, receita.ordem);
+    // Ex.: Buscar receita primeiro em cache na Tabela Hash e depois na AVL (está implementado já)
+    // 
+    TabelaHash pedidosCache;
+    if (inicializaTabelaHash(&pedidosCache) != 0) {
+        avlDestruir(pedidos);
+        return -1;
+    }
+    
+    /*
+    //=========== BUSCA DE PEDIDOS DE FORMA ALEATÓRIA ===========
+    srand(time(NULL));
+    int codigo;
+    int status;
+    Receita receita;
+
+    // DEBUG DE QNTPEDIDOS
+    printf("Pedidos: %ld\nLinhas em %s: %ld\n", qntPedidos, argv[1], qntPedidos*2);
+
+    codigo = 1 + rand() % qntPedidos;
+    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
+    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
+    else printf("ERRO!!!!!");
+
+    codigo = 1 + rand() %qntPedidos;
+    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
+    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
+    else printf("ERRO!!!!!");
+
+    codigo = 1 + rand() %qntPedidos;
+    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
+    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
+    else printf("ERRO!!!!!");
+
+    // === DEBUG TABELA HASH ===
+    printf("Itens: %d\nColisoes: %d\n", pedidosCache.n, pedidosCache.colisao);
+    */
 
     // === Carregar histórico de partidas ===
     ListaContDin historico;
@@ -74,6 +109,9 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
         return 1;
     }
+
+    avlDestruir(pedidos);
+    destruirTabelaHash(&pedidosCache);
 
     return 0;
 }
