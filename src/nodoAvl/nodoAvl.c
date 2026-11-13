@@ -96,19 +96,20 @@ NodoAvl* avlBuscar(NodoAvl *raiz, int cod) {
 // Inserção: descida igual à Abp; na subida, reequilibra cada ancestral.
 // No máximo uma rotação por inserção.
 // Uso: raiz = avlInserir(raiz, receita);
-NodoAvl* avlInserir(NodoAvl *raiz, Receita valor) {
+NodoAvl* avlInserir(NodoAvl *raiz, Receita valor, long *qntPedidos) {
     if (raiz == NULL) {
         NodoAvl *novo = (NodoAvl*) malloc(sizeof(NodoAvl));
         novo->dado   = valor;
         novo->esq    = NULL;
         novo->dir    = NULL;
         novo->altura = 1;
+        (*qntPedidos)++;
         return novo;
     }
     if (valor.cod < raiz->dado.cod)
-        raiz->esq = avlInserir(raiz->esq, valor);
+        raiz->esq = avlInserir(raiz->esq, valor, qntPedidos);
     else if (valor.cod > raiz->dado.cod)
-        raiz->dir = avlInserir(raiz->dir, valor);
+        raiz->dir = avlInserir(raiz->dir, valor, qntPedidos);
     else
         return raiz;   /* duplicado: ignora */
     return avlReequilibrar(raiz);
@@ -175,7 +176,7 @@ void avlDebugImprimir(const NodoAvl *raiz) {
     printf("Total de pedidos na AVL: %zu\n", total);
 }
 
-NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
+NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *qntPedidos) {
 
     FILE *fpedidos = fopen(nomeArquivo, "r");
     if (fpedidos == NULL) {
@@ -191,7 +192,7 @@ NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
         receita.cod = codigo;
         strcpy(receita.ordem, ordem);
 
-        raiz = avlInserir(raiz, receita);
+        raiz = avlInserir(raiz, receita, qntPedidos);
     }
 
     fclose(fpedidos);

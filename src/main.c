@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "receita.h"
 #include "medicoes/medicoes.h"
@@ -22,7 +23,8 @@ int main(int argc, char *argv[]) {
     
     // === Carregar os pedidos na AVL ===
     NodoAvl *pedidos = NULL;
-    pedidos = carregarPedidos(pedidos, argv[1]);
+    long qntPedidos = 0;
+    pedidos = carregarPedidos(pedidos, argv[1], &qntPedidos);
 
     if (pedidos == NULL) {
         printf("Erro: Carregamento de pedidos.\n");
@@ -40,27 +42,34 @@ int main(int argc, char *argv[]) {
         avlDestruir(pedidos);
         return -1;
     }
-
-    // A RESOLVER: como vamos contar o total de pedidos.txt para usar rand()
-
+    
     /*
+    //=========== BUSCA DE PEDIDOS DE FORMA ALEATÓRIA ===========
+    srand(time(NULL));
+    int codigo;
+    int status;
     Receita receita;
-    int status = buscarPedido(&pedidosCache, pedidos, 1, &receita);
+
+    // DEBUG DE QNTPEDIDOS
+    printf("Pedidos: %ld\nLinhas em %s: %ld\n", qntPedidos, argv[1], qntPedidos*2);
+
+    codigo = 1 + rand() % qntPedidos;
+    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
     if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
     else printf("ERRO!!!!!");
 
-    Receita receita2;
-    int status2 = buscarPedido(&pedidosCache, pedidos, 21, &receita2);
-    if (status2 == 1) printf("%d: %s\n", receita2.cod, receita2.ordem);
+    codigo = 1 + rand() %qntPedidos;
+    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
+    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
     else printf("ERRO!!!!!");
 
-    Receita receita3;
-    int status3 = buscarPedido(&pedidosCache, pedidos, 11, &receita3);
-    if (status3 == 1) printf("%d: %s\n", receita3.cod, receita3.ordem);
+    codigo = 1 + rand() %qntPedidos;
+    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
+    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
     else printf("ERRO!!!!!");
 
     // === DEBUG TABELA HASH ===
-    // printf("Itens: %d\nColisoes: %d\n", pedidosCache.n, pedidosCache.colisao);
+    printf("Itens: %d\nColisoes: %d\n", pedidosCache.n, pedidosCache.colisao);
     */
 
     // === Carregar histórico de partidas ===

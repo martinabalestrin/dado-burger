@@ -19,13 +19,13 @@ NodoAvl* avlRotDir(NodoAvl *y);
 NodoAvl* avlRotEsq(NodoAvl *x);
 NodoAvl* avlReequilibrar(NodoAvl *raiz);
 NodoAvl* avlBuscar(NodoAvl *raiz, int cod);
-NodoAvl* avlInserir(NodoAvl *raiz, Receita valor);
+NodoAvl* avlInserir(NodoAvl *raiz, Receita valor, long *qntPedidos);
 NodoAvl* avlMinimo(NodoAvl *raiz);
 NodoAvl* avlRemover(NodoAvl *raiz, int cod);
 NodoAvl* avlDestruir(NodoAvl *raiz);
 void avlDebugImprimir(const NodoAvl *raiz);
 
-NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]);
+NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *qntPedidos);
 NodoAvl* buscarPedidoAvl(NodoAvl *raiz, int codigo);
 
 #endif
