@@ -1,3 +1,6 @@
+#ifndef LISTAENC_H
+#define LISTAENC_H
+
 #include "../receita.h"
 
 typedef struct str_NodoListaEnc NodoListaEnc;
@@ -21,3 +24,5 @@ void    destruirListaEnc(ListaEnc *lista);
 int     tamanhoListaEnc(const ListaEnc *lista);
 
 ListaEnc*   criarPedido(Receita pedido);
+
+#endif
