@@ -7,6 +7,8 @@
 #include "nodoAvl/nodoAvl.h"
 #include "listaContDin/listaContDin.h"
 #include "listaEnc/listaEnc.h"
+#include "cliente/cliente.h"
+#include "fila/fila.h"
 
 int main(int argc, char *argv[]) {
 
@@ -55,6 +57,17 @@ int main(int argc, char *argv[]) {
     }
 
     // ...
+
+    // === Inicialização da fila de clientes ===
+    // A inicialização deve acontecer no início de cada partida (não do jogo)
+    // Todos os clientes entram na fila no início
+    // Remoção após conclusão do pedido
+    FilaEnc clientes;
+    inicializaFila(&clientes);
+    // a lógica do jogo vai definir numero de clientes -> laço para enqueueFila
+    /* essa integração ainda depende do menu do jogo, do sorteio dos pedidos (sugiro sortear todos antes
+    de enfileirar) e da paciência (setar o valor antes de enfileirar/criar clientes)
+    */
 
     // no fim do código
     if (fecharMedicoes(&medicoes) != 0) {
