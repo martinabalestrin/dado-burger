@@ -1,4 +1,5 @@
-#include <stdio.h>
+#ifndef NODOAVL_H
+#define NODOAVL_H
 
 #include "../receita.h"
 
@@ -25,4 +26,6 @@ NodoAvl* avlDestruir(NodoAvl *raiz);
 void avlDebugImprimir(const NodoAvl *raiz);
 
 NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]);
-Receita buscarPedido(NodoAvl *raiz, int codigo);
+NodoAvl* buscarPedidoAvl(NodoAvl *raiz, int codigo);
+
+#endif

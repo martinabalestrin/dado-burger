@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -197,11 +198,7 @@ NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[]) {
     return raiz;
 }
 
-Receita buscarPedido(NodoAvl *raiz, int codigo) {
+NodoAvl* buscarPedidoAvl(NodoAvl *raiz, int codigo) {
     NodoAvl *pedidoNodo = avlBuscar(raiz, codigo);
-    if (pedidoNodo == NULL) {
-        printf("Erro: Pedido não encontrado.\n");
-        return (Receita){0};
-    }
-    else return pedidoNodo->dado;
+    return pedidoNodo;
 }

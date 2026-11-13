@@ -9,6 +9,7 @@
 #include "listaEnc/listaEnc.h"
 #include "cliente/cliente.h"
 #include "fila/fila.h"
+#include "tabelaHash/tabelaHash.h"
 
 int main(int argc, char *argv[]) {
 
@@ -32,10 +33,35 @@ int main(int argc, char *argv[]) {
     // Função de debug para a AVL
     // avlDebugImprimir(pedidos);
 
-    // Ex.: Buscar receita na AVL
-    // Receita receita = buscarPedido(pedidos, 0);
-    // debug:
-    // printf("%d %s\n", receita.cod, receita.ordem);
+    // Ex.: Buscar receita primeiro em cache na Tabela Hash e depois na AVL (está implementado já)
+    // 
+    TabelaHash pedidosCache;
+    if (inicializaTabelaHash(&pedidosCache) != 0) {
+        avlDestruir(pedidos);
+        return -1;
+    }
+
+    // A RESOLVER: como vamos contar o total de pedidos.txt para usar rand()
+
+    /*
+    Receita receita;
+    int status = buscarPedido(&pedidosCache, pedidos, 1, &receita);
+    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
+    else printf("ERRO!!!!!");
+
+    Receita receita2;
+    int status2 = buscarPedido(&pedidosCache, pedidos, 21, &receita2);
+    if (status2 == 1) printf("%d: %s\n", receita2.cod, receita2.ordem);
+    else printf("ERRO!!!!!");
+
+    Receita receita3;
+    int status3 = buscarPedido(&pedidosCache, pedidos, 11, &receita3);
+    if (status3 == 1) printf("%d: %s\n", receita3.cod, receita3.ordem);
+    else printf("ERRO!!!!!");
+
+    // === DEBUG TABELA HASH ===
+    // printf("Itens: %d\nColisoes: %d\n", pedidosCache.n, pedidosCache.colisao);
+    */
 
     // === Carregar histórico de partidas ===
     ListaContDin historico;
@@ -74,6 +100,9 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
         return 1;
     }
+
+    avlDestruir(pedidos);
+    destruirTabelaHash(&pedidosCache);
 
     return 0;
 }
