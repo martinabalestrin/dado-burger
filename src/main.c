@@ -80,6 +80,8 @@ int main(int argc, char *argv[]) {
     inicializarLCD(&historico);
     carregarHistorico(&historico, argv[2]);
 
+    // ORDENAÇÃO: MERGE SORT -> integrar depois quando tivermos funcionalidades de menu
+
     // === LINHA DE DEBUG: LISTA CONTÍGUA DINÂMICA ===
     // depurarHistorico(&historico); 
 
