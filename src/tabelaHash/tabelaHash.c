@@ -10,7 +10,7 @@ int inicializaTabelaHash(TabelaHash *t) {
         return -1;
     }
     t->colisao = 0;
-    t->m = 10;
+    t->m = 13;
     t->n = 0;
     return 0;
 }
