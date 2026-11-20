@@ -70,45 +70,34 @@ void carregarHistorico(ListaContDin *lista, char nomeArquivo[]) {
     fclose(fhistorico);
 }
 
-void salvarHistorico(ListaContDin *lista, Partida nova, char nomeArquivo[]) {
+void salvarHistorico(ListaContDin *lista, Partida nova, char *nomeArquivo) {
     FILE *fhistorico = fopen(nomeArquivo, "a");
     if (fhistorico == NULL) {
         perror(nomeArquivo);
         return;
     }
 
-    fprintf(fhistorico, "%20s\n", nova.nome);
+    fprintf(fhistorico, "%s\n", nova.nome);
     fprintf(fhistorico, "%d\n", nova.pontuacao);
     fclose(fhistorico);
 
     inserirLCD(lista, nova);
 }
 
-// USAR PARA TESTAR O CARREGAMENTO DE HISTÓRICO AGORA MAS PODE APAGAR DEPOIS !!!
-void depurarHistorico(ListaContDin *l) {
-    printf("\n========= DEBUG: HISTORICO DE PARTIDAS =========\n");
-    
-    // CASO 1: Se o ponteiro da lista for nulo
-    if (l == NULL) {
-        printf("[ERRO] A lista passada para o debug eh NULL!\n");
-        printf("================================================\n\n");
+void verHistorico(ListaContDin *lista) {
+    printf("\n========= HISTORICO DE PARTIDAS =========\n");
+
+    if (lista->tamanho == 0) {
+        printf("Erro: A lista está vazia.\n");
         return;
     }
 
-    // CASO 2: Se a lista estiver vazia (Usando l->tamanho)
-    if (l->tamanho == 0) {
-        printf("[AVISO] A lista existe, mas esta VAZIA (0 partidas).\n");
-        printf("================================================\n\n");
-        return;
-    }
-
-    // CASO 3: Imprimir os itens (Usando l->tamanho e l->dados)
-    printf("Total de partidas carregadas: %d\n\n", l->tamanho);
+    printf("Total de partidas: %d\n\n", lista->tamanho);
     printf("  # | %-20s | %s\n", "Nome do Jogador", "Pontuacao");
     printf("------------------------------------------------\n");
     
-    for (int i = 0; i < l->tamanho; i++) {
-        Partida p = l->dados[i]; 
+    for (int i = 0; i < lista->tamanho; i++) {
+        Partida p = lista->dados[i]; 
         printf(" %2d | %-20s | %d\n", i + 1, p.nome, p.pontuacao);
     }
     
