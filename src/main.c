@@ -11,6 +11,7 @@
 #include "cliente/cliente.h"
 #include "fila/fila.h"
 #include "tabelaHash/tabelaHash.h"
+#include "menu/menu.h"
 
 int main(int argc, char *argv[]) {
 
@@ -49,6 +50,8 @@ int main(int argc, char *argv[]) {
     int codigo;
     int status;
     Receita receita;
+
+    // adicionar aqui algum jeito de lidar CASO o código não esteja na AVL, como resortear - não vou ter tempo de fazer agora
 
     // DEBUG DE QNTPEDIDOS
     printf("Pedidos: %ld\nLinhas em %s: %ld\n", qntPedidos, argv[1], qntPedidos*2);
@@ -91,20 +94,22 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // ...
+    // ^^^^^^^ Inicialização dos recursos
 
-    // === Inicialização da fila de clientes ===
-    // A inicialização deve acontecer no início de cada partida (não do jogo)
-    // Todos os clientes entram na fila no início
-    // Remoção após conclusão do pedido
-    FilaEnc clientes;
-    inicializaFila(&clientes);
-    // a lógica do jogo vai definir numero de clientes -> laço para enqueueFila
-    /* essa integração ainda depende do menu do jogo, do sorteio dos pedidos (sugiro sortear todos antes
-    de enfileirar) e da paciência (setar o valor antes de enfileirar/criar clientes)
-    */
+    // ==== CHAMAR MENU ====
+    ContextoJogo contextoJogo = {
+        &medicoes,
+        pedidos,
+        &historico,
+        &pedidosCache,
+        argv[2],            // arquivo de histórico
+        qntPedidos
+    };
 
-    // no fim do código
+    executarMenu(&contextoJogo);
+
+    // vvvvvvvvv Liberação dos resursos
+
     if (fecharMedicoes(&medicoes) != 0) {
         fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
         return 1;
