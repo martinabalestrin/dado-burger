@@ -51,6 +51,7 @@ void destruirHeap(MinHeap *h){
     free(h->dados);
     h->dados = NULL;
     h->tamanho = 0;
+    h->capacidade = 0;
 }
 
 int estaVazioHeap(const MinHeap *h){
