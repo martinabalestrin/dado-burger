@@ -13,13 +13,13 @@ struct str_Nodo{
 typedef struct{
     NodoFila *frente;
     NodoFila *final;
-} FilaEnc;
+} Fila;
 
-void inicializaFila(FilaEnc *f);
-int estaVaziaFila(const FilaEnc *f);
-int enqueueFila(FilaEnc *f, Cliente cliente);
-int dequeueFila(FilaEnc *f, Cliente *clienteRemovido);
-int frenteFila(const FilaEnc *f, Cliente *cliente);
-int tamanhoFila(const FilaEnc *f);
+void inicializaFila(Fila *f);
+int estaVaziaFila(const Fila *f);
+int enqueueFila(Fila *f, Cliente cliente);
+int dequeueFila(Fila *f, Cliente *clienteRemovido);
+int frenteFila(const Fila *f, Cliente *cliente);
+int tamanhoFila(const Fila *f);
 
 #endif

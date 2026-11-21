@@ -3,16 +3,16 @@
 #include "fila.h"
 #include "../cliente/cliente.h"
 
-void inicializaFila(FilaEnc *f){
+void inicializaFila(Fila *f){
     f->frente = NULL;
     f->final = NULL;
 }
 
-int estaVaziaFila(const FilaEnc *f){
+int estaVaziaFila(const Fila *f){
     return f->frente == NULL;
 }
 
-int enqueueFila(FilaEnc *f, Cliente cliente){
+int enqueueFila(Fila *f, Cliente cliente){
     NodoFila *novo = (NodoFila*) malloc(sizeof(NodoFila));
     if (novo == NULL){
         return 0;
@@ -32,7 +32,7 @@ int enqueueFila(FilaEnc *f, Cliente cliente){
     return 1;
 }
 
-int dequeueFila(FilaEnc *f, Cliente *clienteRemovido){
+int dequeueFila(Fila *f, Cliente *clienteRemovido){
     NodoFila *removido;
 
     if (estaVaziaFila(f)){
@@ -51,7 +51,7 @@ int dequeueFila(FilaEnc *f, Cliente *clienteRemovido){
     return 1;
 }
 
-int frenteFila(const FilaEnc *f, Cliente *cliente){
+int frenteFila(const Fila *f, Cliente *cliente){
     if (estaVaziaFila(f)){
         return 0;
     }
@@ -60,7 +60,7 @@ int frenteFila(const FilaEnc *f, Cliente *cliente){
     return 1;
 }
 
-int tamanhoFila(const FilaEnc *f){
+int tamanhoFila(const Fila *f){
     NodoFila *aux = f->frente;
     int contador = 0;
 

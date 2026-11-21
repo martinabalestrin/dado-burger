@@ -3,7 +3,9 @@
 
 typedef struct {
     int pontuacao;
-    char nome[20];
+    char nome[21];
 } Partida;
+
+Partida criarPartida();
 
 #endif // PARTIDA_H
