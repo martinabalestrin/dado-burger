@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../listaContDin/listaContDin.h"
-#include "../partida.h"
+#include "../partida/partida.h"
 #include "../timer/timer.h"
 
 // definição dos 2 modos de ordenação: ordem alfabética e pontuação decrescente

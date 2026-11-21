@@ -42,38 +42,7 @@ int main(int argc, char *argv[]) {
     if (inicializaTabelaHash(&pedidosCache) != 0) {
         avlDestruir(pedidos);
         return -1;
-    }
-    
-    /*
-    //=========== BUSCA DE PEDIDOS DE FORMA ALEATÓRIA ===========
-    srand(time(NULL));
-    int codigo;
-    int status;
-    Receita receita;
-
-    // adicionar aqui algum jeito de lidar CASO o código não esteja na AVL, como resortear - não vou ter tempo de fazer agora
-
-    // DEBUG DE QNTPEDIDOS
-    printf("Pedidos: %ld\nLinhas em %s: %ld\n", qntPedidos, argv[1], qntPedidos*2);
-
-    codigo = 1 + rand() % qntPedidos;
-    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
-    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
-    else printf("ERRO!!!!!");
-
-    codigo = 1 + rand() %qntPedidos;
-    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
-    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
-    else printf("ERRO!!!!!");
-
-    codigo = 1 + rand() %qntPedidos;
-    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
-    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
-    else printf("ERRO!!!!!");
-
-    // === DEBUG TABELA HASH ===
-    printf("Itens: %d\nColisoes: %d\n", pedidosCache.n, pedidosCache.colisao);
-    */
+    }    
 
     // === Carregar histórico de partidas ===
     ListaContDin historico;
@@ -95,6 +64,9 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Erro ao inicializar arquivo de medições\n");
         return 1;
     }
+
+    // Inicializa o rand
+    srand(time(NULL));
 
     // ^^^^^^^ Inicialização dos recursos
 

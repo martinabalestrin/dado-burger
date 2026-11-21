@@ -74,21 +74,87 @@ void novoJogo(ContextoJogo *contextoJogo) {
     Partida partida = criarPartida();
 
     Fila clientes;
-    inicializaFila(&clientes);
-    // SOBRE FILA:
-    // 1. definir número de clientes + paciência de acordo com as dificuldades
-    // 2. sortear os pedidos
-    // 3. enfileirar apenas depois de tudo isso
+    inicializaFila(&clientes);  // ideia: aqui poderia passar a dificuldade e os parâmetros de num e paciência serem ajustados dentro dessa função
+    
+    int numClientes = 5;        // ajustar pela dificuldade
+    int paciencia = 10;         // ajustar pela dificuldade
 
-    // enquanto houver clientes, mostrar o pedido do cliente da frente e ler uma ação
+    for (int i = 0; i < numClientes; i++) {
+        Cliente c = inicializarCliente(paciencia, contextoJogo->qntPedidos);
+        enqueueFila(&clientes, c);
+    }
+    // considerar criar os clientes dentro de atenderClientes - avaliar se há necessidade de ser aqui
+
+    int resultado = atenderClientes(
+        contextoJogo, 
+        &clientes, 
+        &partida.pontuacao
+    );
+    
     // se a ação for válida, consumir o turno, reduzir paciência
-    // ao concluir o pedido, remove o cliente da fila e incrementa a pontuação com partida.pontuacao += 1
 
     // encerra quando a fila acaba (vitória) ou quando a paciência do cliente atual chega a zero (derrota)
-    // -> se a partida acabar com derrota tem que usar dequeue pra remover todos clientes da fila e liberar memória    
+    // -> se a partida acabar com derrota tem que usar dequeue pra remover todos clientes da fila e liberar memória   
+    
+    
+    limparTela();
 
+    if (!resultado) printf("Sentimos muito pela derrota, na próxima você consegue ;)\n");
+    else printf("Parabéns pela vitória!\n");
+    printf("Pontuação: %d\n\n", partida.pontuacao);
+    
     // registra nome e pontuação no histórico
     salvarHistorico(contextoJogo->historico, partida, contextoJogo->arquivoHistorico);
+}
+
+int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao) {    
+    
+    // int turno = 1;
+
+    // Iteração por cliente
+    while (!estaVaziaFila(filaClientes)) {
+        // Enquanto houver clientes, mostrar o pedido do cliente da frente e ler uma ação
+        Receita receita;
+        Cliente cliente = filaClientes->frente->dados;
+
+        // Cliente guarda apenas o código do pedido do cliente, que vai ser carregado apenas na hora que for a vez dele
+        buscarPedido(
+            contextoJogo->pedidosCache,
+            contextoJogo->pedidos,
+            cliente.codigoDoPedido,
+            &receita
+        );
+
+        // Hamburguer montado pelo jogador
+        PilhaEnc *hamburguer = (PilhaEnc*)malloc(sizeof(PilhaEnc));
+        iniciarMontagemHamburguer(hamburguer);
+
+        // Gabarito do hamburguer que o cliente pediu
+        ListaEnc *hamburguerGabarito = criarPedido(receita);
+
+        // Iteração por turno
+        while (
+            !verificarPedido(hamburguer, hamburguerGabarito)
+            && cliente.paciencia > 0
+        ) { 
+            imprimirPilhaHamburguer(hamburguer);
+            // TODO: ações do jogador (issue feat/turnos-acoes)
+            break; // temporário, evita laço infinito
+            
+        }
+
+        free(hamburguer);
+        free(hamburguerGabarito);
+
+        // Se foi derrotado
+        if (cliente.paciencia <= 0) return 0;
+
+        // Se entregou o pedido certo então remove cliente da fila e pontuacao++
+        dequeueFila(filaClientes, &cliente);
+        (*pontuacao)++;
+    }
+
+    return 1;
 }
 
 // Texto gerado por IA a partir do pdf do trabalho como "filler". Após finalização das mecânicas, revisar e fazer as alterações necessárias.
