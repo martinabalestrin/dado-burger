@@ -33,11 +33,18 @@ static void heapify(int dados[], int n, int i){
 }
 
 int inicializarHeap(MinHeap *h, int validade){
+    if (h == NULL || validade <= 0) return 0;
+    
     h->capacidade = 8;
     h->tamanho = 0;
     h->validade = validade;
     h->dados = (int *) malloc(h->capacidade * sizeof(int));
-    return h->dados != NULL;
+    
+    if (h->dados == NULL) {
+        h->capacidade = 0;
+        return 0;
+    }
+    return 1;
 }
 
 void destruirHeap(MinHeap *h){
