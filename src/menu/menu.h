@@ -13,6 +13,7 @@
 #include "../tabelaHash/tabelaHash.h"
 #include "../partida/partida.h"
 #include "../ordenacao/ordenacaoHistorico.h"
+#include "../pilha/pilha.h"
 
 typedef struct {
     Medicoes *medicoes;
@@ -28,5 +29,6 @@ void limparTela();
 void novoJogo(ContextoJogo *contextoJogo);
 void comoJogar();
 void abrirHistorico(ListaContDin *historico);
+int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao);
 
 #endif
