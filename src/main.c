@@ -11,6 +11,7 @@
 #include "cliente/cliente.h"
 #include "fila/fila.h"
 #include "tabelaHash/tabelaHash.h"
+#include "menu/menu.h"
 
 int main(int argc, char *argv[]) {
 
@@ -41,36 +42,7 @@ int main(int argc, char *argv[]) {
     if (inicializaTabelaHash(&pedidosCache) != 0) {
         avlDestruir(pedidos);
         return -1;
-    }
-    
-    /*
-    //=========== BUSCA DE PEDIDOS DE FORMA ALEATÓRIA ===========
-    srand(time(NULL));
-    int codigo;
-    int status;
-    Receita receita;
-
-    // DEBUG DE QNTPEDIDOS
-    printf("Pedidos: %ld\nLinhas em %s: %ld\n", qntPedidos, argv[1], qntPedidos*2);
-
-    codigo = 1 + rand() % qntPedidos;
-    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
-    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
-    else printf("ERRO!!!!!");
-
-    codigo = 1 + rand() %qntPedidos;
-    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
-    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
-    else printf("ERRO!!!!!");
-
-    codigo = 1 + rand() %qntPedidos;
-    status = buscarPedido(&pedidosCache, pedidos, codigo, &receita);
-    if (status == 1) printf("%d: %s\n", receita.cod, receita.ordem);
-    else printf("ERRO!!!!!");
-
-    // === DEBUG TABELA HASH ===
-    printf("Itens: %d\nColisoes: %d\n", pedidosCache.n, pedidosCache.colisao);
-    */
+    }    
 
     // === Carregar histórico de partidas ===
     ListaContDin historico;
@@ -93,20 +65,25 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // ...
+    // Inicializa o rand
+    srand(time(NULL));
 
-    // === Inicialização da fila de clientes ===
-    // A inicialização deve acontecer no início de cada partida (não do jogo)
-    // Todos os clientes entram na fila no início
-    // Remoção após conclusão do pedido
-    FilaEnc clientes;
-    inicializaFila(&clientes);
-    // a lógica do jogo vai definir numero de clientes -> laço para enqueueFila
-    /* essa integração ainda depende do menu do jogo, do sorteio dos pedidos (sugiro sortear todos antes
-    de enfileirar) e da paciência (setar o valor antes de enfileirar/criar clientes)
-    */
+    // ^^^^^^^ Inicialização dos recursos
 
-    // no fim do código
+    // ==== CHAMAR MENU ====
+    ContextoJogo contextoJogo = {
+        &medicoes,
+        pedidos,
+        &historico,
+        &pedidosCache,
+        argv[2],            // arquivo de histórico
+        qntPedidos
+    };
+
+    executarMenu(&contextoJogo);
+
+    // vvvvvvvvv Liberação dos resursos
+
     if (fecharMedicoes(&medicoes) != 0) {
         fprintf(stderr, "Erro ao fechar o arquivo de medições\n");
         return 1;

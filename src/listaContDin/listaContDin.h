@@ -1,8 +1,11 @@
+#ifndef LISTACONTDIN_H
+#define LISTACONTDIN_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "../partida.h"
+#include "../partida/partida.h"
 
 typedef struct {
     int tamanho;
@@ -16,5 +19,7 @@ Partida acessarLCD(const ListaContDin *l, int pos);
 void inserirLCD(ListaContDin *l, Partida novo);
 void removerLCD(ListaContDin *l, int pos);
 void carregarHistorico(ListaContDin *lista, char nomeArquivo[]);
-void salvarHistorico(ListaContDin *lista, Partida nova, char nomeArquivo[]);
-void depurarHistorico(ListaContDin *l);
+void salvarHistorico(ListaContDin *lista, Partida nova, char *nomeArquivo);
+void verHistorico(ListaContDin *lista);
+
+#endif
