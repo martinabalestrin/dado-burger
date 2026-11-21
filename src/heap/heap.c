@@ -60,14 +60,15 @@ int estaVazioHeap(const MinHeap *h){
 
 int inserirHeap(MinHeap *h, int turnoAtual){
     if(h->tamanho == h->capacidade){
-        h->capacidade *= 2;
-        int *temp = (int *) realloc(h->dados, h->capacidade * sizeof(int));
+        int novaCapacidade = 2 * h->capacidade;
+        int *temp = (int *) realloc(h->dados, novaCapacidade * sizeof(int));
 
         if(temp == NULL){
             return 0;
         }
-
+        
         h->dados = temp;
+        h->capacidade = novaCapacidade;
     }
 
     h->dados[h->tamanho] = turnoAtual + h->validade;
