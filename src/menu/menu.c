@@ -76,11 +76,27 @@ void novoJogo(ContextoJogo *contextoJogo) {
     Fila clientes;
     inicializaFila(&clientes);
     // SOBRE FILA:
-    // 1. definir número de clientes + paciência de acordo com as dificuldades
-    // 2. sortear os pedidos
-    // 3. enfileirar apenas depois de tudo isso
+    // definir número de clientes + paciência de acordo com as dificuldades + codPedido:
+    // usar um for com inicializaClientes com inserirFila no fim da função?
 
     // enquanto houver clientes, mostrar o pedido do cliente da frente e ler uma ação
+    Receita receita;
+    Cliente cliente = clientes.frente->dados;
+
+    // Cliente guarda apenas o código do pedido do cliente, que vai ser carregado apenas na hora que for a vez dele
+    buscarPedido(
+        contextoJogo->pedidosCache,
+        contextoJogo->pedidos,
+        cliente.codigoDoPedido,
+        &receita
+    );
+
+    // Cria a pilha de receita
+
+
+    // === TURNOS ===
+    // apenas depois da criação da pilha de receita que começa o turno
+    
     // se a ação for válida, consumir o turno, reduzir paciência
     // ao concluir o pedido, remove o cliente da fila e incrementa a pontuação com partida.pontuacao += 1
 
