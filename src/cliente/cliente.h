@@ -5,11 +5,10 @@
 #include <stdlib.h>
 
 typedef struct{
-    int id;
     int paciencia;
     int codigoDoPedido;
 } Cliente;
 
-// void inicializarCliente();
+Cliente inicializarCliente(int paciencia, long qntPedidos);
 
 #endif
