@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "listaEnc.h"
+#include "../ingrediente/ingrediente.h"
 
 void inicializarListaEnc(ListaEnc *lista) {
     lista->ini = NULL;
@@ -24,8 +25,9 @@ void imprimirListaEnc(const ListaEnc *lista) {
     NodoListaEnc *aux;
     aux = lista->ini;
 
+    printf("Ingredientes:\n");
     while (aux != NULL) {
-        printf("Ingrediente: %c\n", aux->ingrediente);
+        printf("%s\n", nomeDoIngrediente(aux->ingrediente));
         aux = aux->prox;
     }
 }

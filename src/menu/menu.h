@@ -13,6 +13,8 @@
 #include "../tabelaHash/tabelaHash.h"
 #include "../partida/partida.h"
 #include "../pilha/pilha.h"
+#include "../heap/heap.h"
+#include "../ingrediente/ingrediente.h"
 
 typedef struct {
     Medicoes *medicoes;

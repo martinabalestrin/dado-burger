@@ -108,8 +108,13 @@ void novoJogo(ContextoJogo *contextoJogo) {
 }
 
 int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao) {    
+    // Criar estoques
+    MinHeap carne, ovo, bacon;          // Ajustar validade dos itens perecíveis
+    inicializarHeap(&carne, 4);
+    inicializarHeap(&ovo, 3);
+    inicializarHeap(&bacon, 5);
     
-    // int turno = 1;
+    int turno = 1;
 
     // Iteração por cliente
     while (!estaVaziaFila(filaClientes)) {
@@ -137,10 +142,75 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
             !verificarPedido(hamburguer, hamburguerGabarito)
             && cliente.paciencia > 0
         ) { 
+            int descartados = descartarVencidosHeap(&carne, turno);
+            if (descartados > 0) printf("%d carne(s) descartada(s) pois venceram nesse turno!\n", descartados);
+            descartados = descartarVencidosHeap(&ovo, turno);
+            if (descartados > 0) printf("%d ovo(s) descartado(s) pois venceram nesse turno!\n", descartados);
+            descartados = descartarVencidosHeap(&bacon, turno);
+            if (descartados > 0) printf("%d bacon(s) descartado(s) pois venceram nesse turno!\n", descartados);
+
             imprimirPilhaHamburguer(hamburguer);
-            // TODO: ações do jogador (issue feat/turnos-acoes)
-            break; // temporário, evita laço infinito
-            
+
+            printf("\nQual ação você deseja tomar?              Turno atual: %d\n", turno);
+            printf("1. Preparar ingrediente (consome turno)\n");
+            printf("2. Adicionar ingrediente ao hambúrguer (consome turno)\n");
+            printf("3. Remover ingrediente do topo (consome turno)\n");
+            printf("4. Ver estoque\n");
+            printf("5. Ver pedido\n");
+            printf("0. Sair da partida\n");
+            printf("Opção: ");
+
+            int opcao;
+            if (scanf("%d", &opcao) != 1) {
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+                opcao = -1;
+            }
+
+            switch (opcao) {
+                case 1:
+                    // Preparar ingrediente
+                    // abrirEstoque()
+                    // char ingrediente = selecionarEstoque() -> seleciona 1 ingrediente
+                    // prepararIngrediente(&estoque, ingrediente) -> atualiza o estoque com o ingrediente preparado
+
+                    cliente.paciencia--;
+                    turno++;
+                    break;
+
+                case 2:
+                    // Adicionar ingrediente
+                    // abrirEstoque()
+                    // char ingrediente = selecionarEstoque() -> seleciona 1 ingrediente
+                    // adicionarIngredienteHamburguer(hamburguer, ingrediente);
+
+                    cliente.paciencia--;
+                    turno++;
+                    break;
+
+                case 3:
+                    // Remover ingrediente
+                    removerIngredienteHamburguer(hamburguer);
+
+                    cliente.paciencia--;
+                    turno++;
+                    break;
+
+                case 4:
+                    // Ver estoque
+                    // abrirEstoque() -> apenas um print com tudo do estoque
+                    break;
+                case 5:
+                    // Ver pedido
+                    imprimirListaEnc(hamburguerGabarito);
+                    break;
+                case 0: 
+                    // Encerrar partida
+                    return 0;
+                default:
+                    printf("Opção inválida.\n");
+                    break;
+            }
         }
 
         free(hamburguer);

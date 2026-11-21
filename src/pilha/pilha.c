@@ -92,13 +92,17 @@ int adicionarIngredienteHamburguer(PilhaEnc *p, char ingrediente){
 
 // remove o ingrediente do topo / desempilha
 // obs: o pão inferior não pode ser removido do prato
-int removerIngredienteHamburguer(PilhaEnc *p, char *ingredienteRemovido){
+int removerIngredienteHamburguer(PilhaEnc *p){
     // se tamanho <= 1, apenas o pão inferior tá no prato
     if(tamanhoPilha(p) <= 1){
+        printf("\nNenhum ingrediente a remover! Há apenas o pão inferior no prato!");
         return 0;
     }
 
-    return popPilha(p, ingredienteRemovido);
+    char ingredienteRemovido;
+    popPilha(p, &ingredienteRemovido);
+    printf("%s removido(a) e descartado no lixo!", nomeDoIngrediente(ingredienteRemovido));
+    return 1;
 }
 
 // compara a pilha com a ListaEnc da receita: lida de baixo para cima, ignorando o pão inferior
@@ -153,7 +157,7 @@ int verificarPedido(const PilhaEnc *p, const ListaEnc *receita) {
 
 // imprime a montagem atual do topo à base
 void imprimirPilhaHamburguer(const PilhaEnc *p){
-    printf("\nMONTAGEM ATUAL (TOPO -> BASE)\n");
+    printf("\nHambúrguer atual: \n");
     if(estaVaziaPilha(p)){
         printf("[Prato vazio]\n");
         return;
@@ -161,13 +165,7 @@ void imprimirPilhaHamburguer(const PilhaEnc *p){
 
     NodoPilha *aux = p->topo;
     while(aux != NULL){
-        if(aux->ingrediente == PAO_INFERIOR){
-            printf("[%c] (Pao Inferior: base)\n", aux->ingrediente);
-        } else if (aux->ingrediente == PAO_SUPERIOR) {
-            printf("[%c] (Pao Superior: topo)\n", aux->ingrediente);
-        } else {
-            printf("[%c]\n", aux->ingrediente);
-        }
+        printf("%s\n", nomeDoIngrediente(aux->ingrediente));
         aux = aux->prox;
     }
 }

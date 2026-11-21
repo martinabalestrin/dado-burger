@@ -108,6 +108,8 @@ int removerHeap(MinHeap *h, int *vencRemovido){
 }
 
 int descartarVencidosHeap(MinHeap *h, int turnoAtual){
+    if (h->tamanho == 0) return 0;
+
     int descartados = 0;
 
     while(!estaVazioHeap(h) && h->dados[0] <= turnoAtual){
