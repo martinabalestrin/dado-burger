@@ -1,3 +1,6 @@
+#ifndef MEDICOES_H
+#define MEDICOES_H
+
 #include <stdio.h>
 
 typedef struct {
@@ -7,3 +10,5 @@ typedef struct {
 int inicializarMedicoes(Medicoes *m);
 int inserirValor(Medicoes *m, const char *nome, double valor);
 int fecharMedicoes(Medicoes *m);
+
+#endif
