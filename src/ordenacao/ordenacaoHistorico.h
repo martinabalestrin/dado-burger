@@ -16,5 +16,6 @@ typedef enum {
 
 Partida *criarCopiaPartidas(const ListaContDin *lista);     // cria cópia independente do vetor de partidas da lista original
 double ordenarPartidas(Partida *copia, int n, CriterioOrdenacao criterio);      // função principal que executa o merge sort e cronometra apenas a ordenação
+void exibirRanking(const Partida *vetor, int n, const char *titulo, double tempo);
 
 #endif

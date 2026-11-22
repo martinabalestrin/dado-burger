@@ -95,6 +95,7 @@ void executarMenu(ContextoJogo *contextoJogo) {
         printf("1. Novo Jogo\n");
         printf("2. Como jogar\n");
         printf("3. Histórico\n");
+        printf("0. Sair\n");
 
         printf("Escolha: ");
         
@@ -127,11 +128,11 @@ void executarMenu(ContextoJogo *contextoJogo) {
 
             case 3:
                 limparTela();
-                verHistorico(contextoJogo->historico);
-
-                printf("Aperte ENTER para voltar ao menu!\n\n");
-                getchar();
+                abrirHistorico(contextoJogo->historico);
                 break;
+
+            case 0:
+                return;
 
             default:
                 printf("Opção inválida! Pressione ENTER para tentar novamente.");
@@ -614,4 +615,73 @@ void comoJogar() {
     printf(" Sua pontuação e igual ao número de clientes atendidos.\n");
 
     printf("\n============================================================\n");
+}
+
+void abrirHistorico(ListaContDin *historico) {
+
+    int opcao = -1;
+    int caractere;
+
+    while (1) {
+        limparTela();
+
+        printf("Como você deseja ordenar o histórico?\n\n");
+        printf("1. Ordem alfabética\n");
+        printf("2. Maior Pontuação\n");
+        printf("0. Voltar ao menu\n");
+        printf("Escolha: ");
+
+        if (scanf("%d", &opcao) != 1) {
+            while ((caractere = getchar()) != '\n' && caractere != EOF);
+            opcao = -1;
+            printf("Entrada inválida! Pressione ENTER para continuar.");
+            getchar();
+            continue;
+        }
+
+        // Limpa o restante da entrada
+        while ((caractere = getchar()) != '\n' && caractere != EOF);
+
+        switch (opcao) {
+            case 1:             // Ordem alfabética
+                limparTela();
+
+                Partida *ordemAlfabetica = criarCopiaPartidas(historico);
+                if (ordemAlfabetica != NULL) {
+                    double tempoAlfa = ordenarPartidas(ordemAlfabetica, historico->tamanho, ORDEM_ALFABETICA);
+                    exibirRanking(ordemAlfabetica, historico->tamanho, "Histórico (A-Z)", tempoAlfa);
+                    free(ordemAlfabetica);          // libera a cópia depois de exibir
+                }
+                else printf("Nenhuma partida registrada.\n");
+
+                printf("\nAperte ENTER para voltar à página de histórico!\n");
+                getchar();
+                break;
+
+            case 2:             // Pontuação decrescente
+                limparTela();
+
+                Partida *pontuacaoDecrescente = criarCopiaPartidas(historico);
+                if (pontuacaoDecrescente != NULL) {
+                    double tempoPontos = ordenarPartidas(pontuacaoDecrescente, historico->tamanho, ORDEM_PONTUACAO_DECRESCENTE);
+                    exibirRanking(pontuacaoDecrescente, historico->tamanho, "Histórico (Maior Pontuação)", tempoPontos);
+                    free(pontuacaoDecrescente);     // libera a cópia depois de exibir
+                }
+                else printf("Nenhuma partida registrada.\n");
+
+                printf("\nAperte ENTER para voltar à página de histórico!\n\n");
+                getchar();
+                break;
+                
+            case 0:
+                return;
+
+            default:
+                printf("Opção inválida! Pressione ENTER para tentar novamente.");
+                getchar();
+                break;
+            }
+    }
+
+    return;
 }

@@ -91,6 +91,7 @@ int main(int argc, char *argv[]) {
 
     avlDestruir(pedidos);
     destruirTabelaHash(&pedidosCache);
+    destruirLCD(&historico);
 
     return 0;
 }

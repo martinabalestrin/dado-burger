@@ -12,6 +12,7 @@
 #include "../fila/fila.h"
 #include "../tabelaHash/tabelaHash.h"
 #include "../partida/partida.h"
+#include "../ordenacao/ordenacaoHistorico.h"
 #include "../pilha/pilha.h"
 #include "../heap/heap.h"
 #include "../ingrediente/ingrediente.h"
@@ -35,6 +36,8 @@ void executarMenu(ContextoJogo *contextoJogo);
 void limparTela();
 void novoJogo(ContextoJogo *contextoJogo);
 void comoJogar();
+void abrirHistorico(ListaContDin *historico);
+int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao);
 int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao, Dificuldade dificuldade);
 void visualizarEstoque(const MinHeap *carne, const MinHeap *ovo, const MinHeap *bacon, const int estoquePreparados[4]);
 char selecionarIngrediente(int apenasPreparaveis);

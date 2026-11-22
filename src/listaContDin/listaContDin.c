@@ -83,23 +83,3 @@ void salvarHistorico(ListaContDin *lista, Partida nova, char *nomeArquivo) {
 
     inserirLCD(lista, nova);
 }
-
-void verHistorico(ListaContDin *lista) {
-    printf("\n========= HISTORICO DE PARTIDAS =========\n");
-
-    if (lista->tamanho == 0) {
-        printf("Erro: A lista está vazia.\n");
-        return;
-    }
-
-    printf("Total de partidas: %d\n\n", lista->tamanho);
-    printf("  # | %-20s | %s\n", "Nome do Jogador", "Pontuacao");
-    printf("------------------------------------------------\n");
-    
-    for (int i = 0; i < lista->tamanho; i++) {
-        Partida p = lista->dados[i]; 
-        printf(" %2d | %-20s | %d\n", i + 1, p.nome, p.pontuacao);
-    }
-    
-    printf("================================================\n\n");
-}
