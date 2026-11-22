@@ -1,14 +1,11 @@
 #ifndef PILHA_H
 #define PILHA_H
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "../listaEnc/listaEnc.h"
 
-// definições dos pães`
-// obs: defini como 'i' o inferior por uma questão de funcionamento das funções (achei melhor assim)
-// o pão superior tá definido como no enunciado do trabalho
-#define PAO_INFERIOR 'i' // pão inferior: base já no prato, fora da receita
-#define PAO_SUPERIOR 'z' // pão superior: encerra a montagem e bloqueia novas adições
+#include "../listaEnc/listaEnc.h"
+#include "../ingrediente/ingrediente.h"
 
 typedef struct str_NodoPilha {
     char ingrediente;

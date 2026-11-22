@@ -48,6 +48,8 @@ int inicializarHeap(MinHeap *h, int validade){
 }
 
 void destruirHeap(MinHeap *h){
+    if (h == NULL) return;
+
     free(h->dados);
     h->dados = NULL;
     h->tamanho = 0;
@@ -55,10 +57,14 @@ void destruirHeap(MinHeap *h){
 }
 
 int estaVazioHeap(const MinHeap *h){
-    return h->tamanho == 0;
+    return h == NULL || h->dados == NULL || h->tamanho == 0;
 }
 
 int inserirHeap(MinHeap *h, int turnoAtual){
+    if(h == NULL || h->dados == NULL || h->capacidade <= 0){
+        return 0;
+    }
+
     if(h->tamanho == h->capacidade){
         int novaCapacidade = 2 * h->capacidade;
         int *temp = (int *) realloc(h->dados, novaCapacidade * sizeof(int));
@@ -79,7 +85,7 @@ int inserirHeap(MinHeap *h, int turnoAtual){
 
 int proximoVencimentoHeap(const MinHeap *h, int *venc){
 
-    if(estaVazioHeap(h)){
+    if(estaVazioHeap(h) || venc == NULL){
         return 0;
     }
 
@@ -108,6 +114,8 @@ int removerHeap(MinHeap *h, int *vencRemovido){
 }
 
 int descartarVencidosHeap(MinHeap *h, int turnoAtual){
+    if (estaVazioHeap(h)) return 0;
+
     int descartados = 0;
 
     while(!estaVazioHeap(h) && h->dados[0] <= turnoAtual){
@@ -119,6 +127,8 @@ int descartarVencidosHeap(MinHeap *h, int turnoAtual){
 }
 
 void imprimirHeap(const MinHeap *h, const char *nome){
+    if(h == NULL || h->dados == NULL) return;
+
     printf("%s (qtd: %d): [ ", nome, h->tamanho);
 
     for(int i = 0; i < h->tamanho; i++){
