@@ -15,17 +15,17 @@ struct str_NodoAvl {
 int avlAltura(const NodoAvl *no);
 int avlFb(const NodoAvl *no);
 void avlAtualizarAltura(NodoAvl *no);
-NodoAvl* avlRotDir(NodoAvl *y);
-NodoAvl* avlRotEsq(NodoAvl *x);
-NodoAvl* avlReequilibrar(NodoAvl *raiz);
+NodoAvl* avlRotDir(NodoAvl *y, long *rotacoesInsercao);
+NodoAvl* avlRotEsq(NodoAvl *x, long *rotacoesInsercao);
+NodoAvl* avlReequilibrar(NodoAvl *raiz, long *rotacoesInsercao);
 NodoAvl* avlBuscar(NodoAvl *raiz, int cod);
-NodoAvl* avlInserir(NodoAvl *raiz, Receita valor, long *qntPedidos);
+NodoAvl* avlInserir(NodoAvl *raiz, Receita valor, long *nosInseridos, long *rotacoesInsercao);
 NodoAvl* avlMinimo(NodoAvl *raiz);
 NodoAvl* avlRemover(NodoAvl *raiz, int cod);
 NodoAvl* avlDestruir(NodoAvl *raiz);
 void avlDebugImprimir(const NodoAvl *raiz);
 
-NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *qntPedidos);
+NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *nosInseridos, long *rotacoesInsercao);
 NodoAvl* buscarPedidoAvl(NodoAvl *raiz, int codigo);
 
 #endif

@@ -32,31 +32,33 @@ void avlAtualizarAltura(NodoAvl *no) {
 // Rotação simples à DIREITA (caso LL)
 // x sobe; B (filho dir de x) passa para filho esq de y
 // Atualiza y primeiro (ficou abaixo), depois x
-NodoAvl* avlRotDir(NodoAvl *y) {
+NodoAvl* avlRotDir(NodoAvl *y, long *rotacoesInsercao) {
     NodoAvl *x = y->esq;
     NodoAvl *B = x->dir;
     x->dir = y;
     y->esq = B;
     avlAtualizarAltura(y);
     avlAtualizarAltura(x);
+    (*rotacoesInsercao)++;
     return x;
 }
 
 // Rotação simples à ESQUERDA (caso RR). Simétrica à anterior
 // y sobe; B (filho esq de y) passa para filho dir de x
-NodoAvl* avlRotEsq(NodoAvl *x) {
+NodoAvl* avlRotEsq(NodoAvl *x, long *rotacoesInsercao) {
     NodoAvl *y = x->dir;
     NodoAvl *B = y->esq;
     y->esq = x;
     x->dir = B;
     avlAtualizarAltura(x);
     avlAtualizarAltura(y);
+    (*rotacoesInsercao)++;
     return y;
 }
 
 // Verifica o FB e aplica a rotação correta
 // Usada tanto na inserção quanto na remoção
-NodoAvl* avlReequilibrar(NodoAvl *raiz) {
+NodoAvl* avlReequilibrar(NodoAvl *raiz, long *rotacoesInsercao) {
     if (raiz == NULL) return NULL;
     
     avlAtualizarAltura(raiz);
@@ -64,22 +66,22 @@ NodoAvl* avlReequilibrar(NodoAvl *raiz) {
 
     // LL: pesado à esq, filho esq também pesado à esq ou equilibrado
     if (fb == +2 && avlFb(raiz->esq) >= 0)
-        return avlRotDir(raiz);
+        return avlRotDir(raiz, rotacoesInsercao);
 
     // RR: pesado à dir, filho dir também pesado à dir ou equilibrado
     if (fb == -2 && avlFb(raiz->dir) <= 0)
-        return avlRotEsq(raiz);
+        return avlRotEsq(raiz, rotacoesInsercao);
 
     // LR: pesado à esq, filho esq pesado à dir -> transforma LR em LL
     if (fb == +2 && avlFb(raiz->esq) < 0) {
-        raiz->esq = avlRotEsq(raiz->esq);
-        return avlRotDir(raiz);
+        raiz->esq = avlRotEsq(raiz->esq, rotacoesInsercao);
+        return avlRotDir(raiz, rotacoesInsercao);
     }
 
     // RL: pesado à dir, filho dir pesado à esq -> transforma RL em RR
     if (fb == -2 && avlFb(raiz->dir) > 0) {
-        raiz->dir = avlRotDir(raiz->dir);
-        return avlRotEsq(raiz);
+        raiz->dir = avlRotDir(raiz->dir, rotacoesInsercao);
+        return avlRotEsq(raiz, rotacoesInsercao);
     }
 
     return raiz;   // sem desequilíbrio
@@ -96,23 +98,23 @@ NodoAvl* avlBuscar(NodoAvl *raiz, int cod) {
 // Inserção: descida igual à Abp; na subida, reequilibra cada ancestral.
 // No máximo uma rotação por inserção.
 // Uso: raiz = avlInserir(raiz, receita);
-NodoAvl* avlInserir(NodoAvl *raiz, Receita valor, long *qntPedidos) {
+NodoAvl* avlInserir(NodoAvl *raiz, Receita valor, long *nosInseridos, long *rotacoesInsercao) {
     if (raiz == NULL) {
         NodoAvl *novo = (NodoAvl*) malloc(sizeof(NodoAvl));
         novo->dado   = valor;
         novo->esq    = NULL;
         novo->dir    = NULL;
         novo->altura = 1;
-        (*qntPedidos)++;
+        (*nosInseridos)++;
         return novo;
     }
     if (valor.cod < raiz->dado.cod)
-        raiz->esq = avlInserir(raiz->esq, valor, qntPedidos);
+        raiz->esq = avlInserir(raiz->esq, valor, nosInseridos, rotacoesInsercao);
     else if (valor.cod > raiz->dado.cod)
-        raiz->dir = avlInserir(raiz->dir, valor, qntPedidos);
+        raiz->dir = avlInserir(raiz->dir, valor, nosInseridos, rotacoesInsercao);
     else
         return raiz;   /* duplicado: ignora */
-    return avlReequilibrar(raiz);
+    return avlReequilibrar(raiz, rotacoesInsercao);
 }
 
 // Auxiliar: menor nó da subárvore (sucessor em-ordem).
@@ -147,7 +149,7 @@ NodoAvl* avlRemover(NodoAvl *raiz, int cod) {
         raiz->dado = sucessor->dado;
         raiz->dir  = avlRemover(raiz->dir, sucessor->dado.cod);
     }
-    return avlReequilibrar(raiz);
+    return avlReequilibrar(raiz, NULL);
 }
 
 // Destroi toda a árvore em pós-ordem.
@@ -176,7 +178,7 @@ void avlDebugImprimir(const NodoAvl *raiz) {
     printf("Total de pedidos na AVL: %zu\n", total);
 }
 
-NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *qntPedidos) {
+NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *nosInseridos, long *rotacoesInsercao) {
 
     FILE *fpedidos = fopen(nomeArquivo, "r");
     if (fpedidos == NULL) {
@@ -192,7 +194,7 @@ NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *qntPedidos) {
         receita.cod = codigo;
         strcpy(receita.ordem, ordem);
 
-        raiz = avlInserir(raiz, receita, qntPedidos);
+        raiz = avlInserir(raiz, receita, nosInseridos, rotacoesInsercao);
     }
 
     fclose(fpedidos);

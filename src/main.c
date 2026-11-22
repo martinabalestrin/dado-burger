@@ -80,8 +80,7 @@ int main(int argc, char *argv[]) {
 
     executarMenu(&contextoJogo);
 
-    // vvvvvvvvv Liberação dos resursos
-
+    // Liberação de memória das estruturas criadas na main
     avlDestruir(pedidos);
     destruirTabelaHash(&pedidosCache);
     destruirLCD(&historico);
