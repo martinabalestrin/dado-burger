@@ -73,3 +73,14 @@ void inserirHashDurantePartida(Medicoes *m, struct TabelaHash *hash) {
 
     fflush(arquivo);
 }
+
+void inserirOrdenacaoHistorico(Medicoes *m, MetricasOrdenacao *ordenacao) {
+    FILE *arquivo = m->fmedicoes;
+
+    fprintf(arquivo, "-- Ordenacao do historico (ao acessar Historico) --\n");
+    fprintf(arquivo, "%-25s %d entradas\n", "Tamanho:", ordenacao->tamanho);
+    fprintf(arquivo, "%-25s %.6f s\n", "Merge Sort:", ordenacao->tempo);
+    fprintf(arquivo, "================================\n");
+
+    fflush(arquivo);
+}

@@ -15,6 +15,11 @@ typedef struct {
     double tempoAcumulado;
 } MetricasAvl;
 
+typedef struct {
+    int tamanho;
+    double tempo;
+} MetricasOrdenacao;
+
 int inicializarMedicoes(Medicoes *m);
 int inserirValor(Medicoes *m, const char *nome, double valor);
 int fecharMedicoes(Medicoes *m);
@@ -22,5 +27,6 @@ void inserirAvlCarregamento(Medicoes *m, long nos, int altura, long rotacoes, do
 void inserirHistoricoCarregamento(Medicoes *m, int entradas);
 void inserirAvlDurantePartida(Medicoes *m, MetricasAvl *avl);
 void inserirHashDurantePartida(Medicoes *m, struct TabelaHash *hash);
+void inserirOrdenacaoHistorico(Medicoes *m, MetricasOrdenacao *ordenacao);
 
 #endif

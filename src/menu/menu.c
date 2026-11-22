@@ -128,7 +128,7 @@ void executarMenu(ContextoJogo *contextoJogo) {
 
             case 3:
                 limparTela();
-                abrirHistorico(contextoJogo->historico);
+                abrirHistorico(contextoJogo->historico, contextoJogo->metricasOrdenacao);
                 break;
 
             case 0:
@@ -618,7 +618,7 @@ void comoJogar() {
     printf("\n============================================================\n");
 }
 
-void abrirHistorico(ListaContDin *historico) {
+void abrirHistorico(ListaContDin *historico, MetricasOrdenacao *metricasOrdenacao) {
 
     int opcao = -1;
     int caractere;
@@ -650,6 +650,8 @@ void abrirHistorico(ListaContDin *historico) {
                 Partida *ordemAlfabetica = criarCopiaPartidas(historico);
                 if (ordemAlfabetica != NULL) {
                     double tempoAlfa = ordenarPartidas(ordemAlfabetica, historico->tamanho, ORDEM_ALFABETICA);
+                    metricasOrdenacao->tamanho = historico->tamanho;
+                    metricasOrdenacao->tempo = tempoAlfa;
                     exibirRanking(ordemAlfabetica, historico->tamanho, "Histórico (A-Z)", tempoAlfa);
                     free(ordemAlfabetica);          // libera a cópia depois de exibir
                 }
@@ -665,6 +667,8 @@ void abrirHistorico(ListaContDin *historico) {
                 Partida *pontuacaoDecrescente = criarCopiaPartidas(historico);
                 if (pontuacaoDecrescente != NULL) {
                     double tempoPontos = ordenarPartidas(pontuacaoDecrescente, historico->tamanho, ORDEM_PONTUACAO_DECRESCENTE);
+                    metricasOrdenacao->tamanho = historico->tamanho;
+                    metricasOrdenacao->tempo = tempoPontos;
                     exibirRanking(pontuacaoDecrescente, historico->tamanho, "Histórico (Maior Pontuação)", tempoPontos);
                     free(pontuacaoDecrescente);     // libera a cópia depois de exibir
                 }
