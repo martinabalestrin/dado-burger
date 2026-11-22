@@ -113,3 +113,27 @@ double ordenarPartidas(Partida *copia, int n, CriterioOrdenacao criterio) {
 
     return tempoExecucao;
 }
+
+void exibirRanking(const Partida *vetor, int n, const char *titulo, double tempo) {
+    printf("================================================\n");
+    printf("  %s\n", titulo);
+    printf("================================================\n");
+
+    if (vetor == NULL || n <= 0) {
+        printf("  Nenhuma partida registrada.\n");
+        printf("================================================\n\n");
+        return;
+    }
+
+    printf("  Total de partidas: %d\n\n", n);
+    // printf("  Tempo de ordenação: %.6f s\n\n", tempo);
+
+    printf(" %6s | %-20s | %s\n", "#", "Nome do Jogador", "Pontuação");
+    printf("------------------------------------------------\n");
+
+    for (int i = 0; i < n; i++) {
+        printf(" %6d | %-20s | %d\n", i + 1, vetor[i].nome, vetor[i].pontuacao);
+    }
+
+    printf("================================================\n\n");
+}

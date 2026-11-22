@@ -5,4 +5,7 @@ Ana
 Bruno
 70
 Diana
-70
+70diana
+0
+diana
+1
