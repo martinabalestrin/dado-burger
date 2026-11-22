@@ -304,7 +304,8 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
                 contextoJogo->pedidosCache,
                 contextoJogo->pedidos,
                 cliente.codigoDoPedido,
-                &receita
+                &receita,
+                contextoJogo->metricasAvl
             ) != 1) {
             fprintf(stderr, "Erro: não foi possível recuperar o pedido %d.\n", cliente.codigoDoPedido);
             destruirEstoques(&carne, &ovo, &bacon);

@@ -64,14 +64,14 @@ int removerTabelaHash(TabelaHash *t, int chave) {
     return 0;
 }
 
-int buscarPedido(TabelaHash *tabela, NodoAvl *raizAvl, int codPedido, Receita *receita) {
+int buscarPedido(TabelaHash *tabela, NodoAvl *raizAvl, int codPedido, Receita *receita, MetricasAvl *metricasAvl) {
     NodoHash *hash = buscarTabelaHash(tabela, codPedido);
     if (hash != NULL) {
         *receita = hash->dado;
         return 1;
     };
     
-    NodoAvl *avl = buscarPedidoAvl(raizAvl, codPedido);
+    NodoAvl *avl = buscarPedidoAvl(raizAvl, codPedido, metricasAvl);
     if (avl == NULL) {
         fprintf(stderr, "Erro: pedido %d nao encontrado.\n", codPedido);
         return 0;

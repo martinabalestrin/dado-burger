@@ -42,3 +42,15 @@ void inserirHistoricoCarregamento(Medicoes *m, int entradas) {
     
     fflush(arquivo);
 }
+
+void inserirAvlDurantePartida(Medicoes *m, MetricasAvl *avl) {
+    FILE *arquivo = m->fmedicoes;
+
+    fprintf(arquivo, "-- AVL: buscas durante a partida --\n");
+    fprintf(arquivo, "%-25s %d\n", "Total de buscas:", avl->buscas);
+    fprintf(arquivo, "%-25s %ld\n", "Total de comparacoes:", avl->comparacoes);
+    fprintf(arquivo, "%-25s %.2f\n", "Media de comparacoes por busca:", (double)avl->comparacoes / avl->buscas);
+    fprintf(arquivo, "%-25s %.6fs\n", "Tempo total acumulado:", avl->tempoAcumulado);
+
+    fflush(arquivo);
+}
