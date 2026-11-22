@@ -13,6 +13,14 @@
 #include "../tabelaHash/tabelaHash.h"
 #include "../partida/partida.h"
 #include "../pilha/pilha.h"
+#include "../heap/heap.h"
+#include "../ingrediente/ingrediente.h"
+
+typedef enum {
+    DIFICULDADE_FACIL = 1,
+    DIFICULDADE_MEDIO = 2,
+    DIFICULDADE_DIFICIL = 3
+} Dificuldade;
 
 typedef struct {
     Medicoes *medicoes;
@@ -27,6 +35,8 @@ void executarMenu(ContextoJogo *contextoJogo);
 void limparTela();
 void novoJogo(ContextoJogo *contextoJogo);
 void comoJogar();
-int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao);
+int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao, Dificuldade dificuldade);
+void visualizarEstoque(const MinHeap *carne, const MinHeap *ovo, const MinHeap *bacon, const int estoquePreparados[4]);
+char selecionarIngrediente(int apenasPreparaveis);
 
 #endif

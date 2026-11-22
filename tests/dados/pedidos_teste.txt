@@ -1,3 +1,12 @@
-1 ABCDE
-2 BCDEF
-3 CDEFG
+1 kz
+2 az
+3 nz
+4 oz
+5 bz
+6 sz
+7 qz
+8 cz
+9 tz
+10 kmpz
+11 nqsaz
+12 obtz

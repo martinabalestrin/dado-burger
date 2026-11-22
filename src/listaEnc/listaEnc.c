@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "listaEnc.h"
+#include "../ingrediente/ingrediente.h"
 
 void inicializarListaEnc(ListaEnc *lista) {
     lista->ini = NULL;
@@ -20,14 +21,16 @@ int tamanhoListaEnc(const ListaEnc *lista) {
     return contador;
 }
 
-void imprimirListaEnc(const ListaEnc *lista) {
-    NodoListaEnc *aux;
-    aux = lista->ini;
+static void imprimirTopoAoFim(const NodoListaEnc *nodo) {
+    if (nodo == NULL) return;
+    imprimirTopoAoFim(nodo->prox);
+    printf("%s\n", nomeDoIngrediente(nodo->ingrediente));
+}
 
-    while (aux != NULL) {
-        printf("Ingrediente: %c\n", aux->ingrediente);
-        aux = aux->prox;
-    }
+void imprimirListaEnc(const ListaEnc *lista) {
+    printf("Ingredientes:\n");
+    imprimirTopoAoFim(lista->ini);
+    printf("%s\n", nomeDoIngrediente(PAO_INFERIOR));
 }
 
 int buscarListaEnc(const ListaEnc *lista, char ingrediente) {
