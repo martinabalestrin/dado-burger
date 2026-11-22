@@ -84,6 +84,8 @@ int main(int argc, char *argv[]) {
     executarMenu(&contextoJogo);
 
     inserirAvlDurantePartida(&medicoes, &metricasAvl);
+    inserirHashDurantePartida(&medicoes, &pedidosCache);
+
 
     // Liberação de memória das estruturas criadas na main
     avlDestruir(pedidos);

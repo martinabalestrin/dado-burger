@@ -4,14 +4,16 @@
 #include "tabelaHash.h"
 
 int inicializaTabelaHash(TabelaHash *t) {
-    t->tabela = calloc(10, sizeof(t->tabela));
+    t->m = 17;
+    t->tabela = calloc(t->m, sizeof(NodoHash*));
     if (t->tabela == NULL) {
         fprintf(stderr, "Erro: memória insuficiente");
         return -1;
     }
     t->colisao = 0;
-    t->m = 13;
     t->n = 0;
+    t->hits = 0;
+    t->misses = 0;
     return 0;
 }
 
@@ -67,10 +69,12 @@ int removerTabelaHash(TabelaHash *t, int chave) {
 int buscarPedido(TabelaHash *tabela, NodoAvl *raizAvl, int codPedido, Receita *receita, MetricasAvl *metricasAvl) {
     NodoHash *hash = buscarTabelaHash(tabela, codPedido);
     if (hash != NULL) {
+        tabela->hits++;
         *receita = hash->dado;
         return 1;
-    };
-    
+    }
+
+    tabela->misses++;
     NodoAvl *avl = buscarPedidoAvl(raizAvl, codPedido, metricasAvl);
     if (avl == NULL) {
         fprintf(stderr, "Erro: pedido %d nao encontrado.\n", codPedido);

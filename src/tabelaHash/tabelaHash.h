@@ -10,11 +10,13 @@ typedef struct NodoHash {
     struct NodoHash *prox;
 } NodoHash;
 
-typedef struct {
+typedef struct TabelaHash {
     NodoHash **tabela;
     int m;
     int n;
     int colisao;
+    int hits;
+    int misses;
 } TabelaHash;
 
 int inicializaTabelaHash(TabelaHash *t);
