@@ -21,15 +21,16 @@ int tamanhoListaEnc(const ListaEnc *lista) {
     return contador;
 }
 
-void imprimirListaEnc(const ListaEnc *lista) {
-    NodoListaEnc *aux;
-    aux = lista->ini;
+static void imprimirTopoAoFim(const NodoListaEnc *nodo) {
+    if (nodo == NULL) return;
+    imprimirTopoAoFim(nodo->prox);
+    printf("%s\n", nomeDoIngrediente(nodo->ingrediente));
+}
 
+void imprimirListaEnc(const ListaEnc *lista) {
     printf("Ingredientes:\n");
-    while (aux != NULL) {
-        printf("%s\n", nomeDoIngrediente(aux->ingrediente));
-        aux = aux->prox;
-    }
+    imprimirTopoAoFim(lista->ini);
+    printf("%s\n", nomeDoIngrediente(PAO_INFERIOR));
 }
 
 int buscarListaEnc(const ListaEnc *lista, char ingrediente) {

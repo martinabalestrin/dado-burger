@@ -28,7 +28,7 @@ void destruirPilha(PilhaEnc *p);
 // funções da montagem do hambúrguer
 int iniciarMontagemHamburguer(PilhaEnc *p);
 int adicionarIngredienteHamburguer(PilhaEnc *p, char ingrediente);
-int removerIngredienteHamburguer(PilhaEnc *p);
+int removerIngredienteHamburguer(PilhaEnc *p, char *ingredienteRemovido);
 int verificarPedido(const PilhaEnc *p, const ListaEnc *receita);
 void imprimirPilhaHamburguer(const PilhaEnc *p);
 

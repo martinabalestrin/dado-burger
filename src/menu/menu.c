@@ -176,6 +176,55 @@ static Dificuldade selecionarDificuldade(){
     }
 }
 
+typedef struct {
+    int numClientes;
+    int paciencia;
+    int validadeCarne;
+    int validadeOvo;
+    int validadeBacon;
+} ConfiguracaoDificuldade;
+
+static ConfiguracaoDificuldade configuracaoDaDificuldade(Dificuldade dificuldade){
+    switch(dificuldade){
+        case DIFICULDADE_FACIL:
+            return (ConfiguracaoDificuldade){3, 15, 5, 5, 5};
+        case DIFICULDADE_DIFICIL:
+            return (ConfiguracaoDificuldade){7, 11, 1, 1, 1};
+        case DIFICULDADE_MEDIO:
+        default:
+            return (ConfiguracaoDificuldade){5, 13, 3, 3, 3};
+    }
+}
+
+static void avancarTurno(int *turno, Cliente *cliente){
+    cliente->paciencia--;
+    (*turno)++;
+}
+
+static void esvaziarFila(Fila *f){
+    Cliente lixo;
+    while(!estaVaziaFila(f)){
+        dequeueFila(f, &lixo);
+    }
+}
+
+static void destruirEstoques(MinHeap *carne, MinHeap *ovo, MinHeap *bacon){
+    destruirHeap(carne);
+    destruirHeap(ovo);
+    destruirHeap(bacon);
+}
+
+static void destruirMontagem(PilhaEnc *hamburguer, ListaEnc *gabarito){
+    if(hamburguer != NULL){
+        destruirPilha(hamburguer);
+        free(hamburguer);
+    }
+    if(gabarito != NULL){
+        destruirListaEnc(gabarito);
+        free(gabarito);
+    }
+}
+
 void novoJogo(ContextoJogo *contextoJogo) {
     Dificuldade dificuldade = selecionarDificuldade();
 
@@ -184,29 +233,16 @@ void novoJogo(ContextoJogo *contextoJogo) {
 
     Fila clientes;
     inicializaFila(&clientes);
-    
-    int numClientes;  
-    int paciencia;
 
-    switch(dificuldade){
-        case DIFICULDADE_FACIL:
-            numClientes = 3;
-            paciencia = 15;
-            break;
-        case DIFICULDADE_DIFICIL:
-            numClientes = 7;
-            paciencia = 8;
-            break;
-        case DIFICULDADE_MEDIO:
-        default:
-            numClientes = 5;
-            paciencia = 10;
-            break;
-    }
+    ConfiguracaoDificuldade config = configuracaoDaDificuldade(dificuldade);
 
-    for (int i = 0; i < numClientes; i++) {
-        Cliente c = inicializarCliente(paciencia, contextoJogo->qntPedidos);
-        enqueueFila(&clientes, c);
+    for (int i = 0; i < config.numClientes; i++) {
+        Cliente c = inicializarCliente(config.paciencia, contextoJogo->qntPedidos);
+        if (!enqueueFila(&clientes, c)) {
+            esvaziarFila(&clientes);
+            printf("Erro de memória ao montar a fila de clientes. A partida não foi iniciada.\n");
+            return;
+        }
     }
 
     int resultado = atenderClientes(
@@ -217,12 +253,14 @@ void novoJogo(ContextoJogo *contextoJogo) {
     );
     
     // -> se a partida acabar com derrota: dequeue pra remover todos clientes da fila e liberar memória   
-    Cliente lixo;
-    while(!estaVaziaFila(&clientes)){
-        dequeueFila(&clientes, &lixo);
-    }
+    esvaziarFila(&clientes);
     
     limparTela();
+
+    if (resultado < 0) {
+        printf("Ocorreu um erro durante a partida e ela foi encerrada.\n");
+        return;
+    }
 
     if (!resultado) printf("Sentimos muito pela derrota, na próxima você consegue ;)\n");
     else printf("Parabéns pela vitória!\n");
@@ -232,33 +270,22 @@ void novoJogo(ContextoJogo *contextoJogo) {
     salvarHistorico(contextoJogo->historico, partida, contextoJogo->arquivoHistorico);
 }
 
+// retorna 1 em vitória, 0 em derrota/saída e -1 em erro (memória ou receita não encontrada)
 int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao, Dificuldade dificuldade) {    
-   // Define validade dos itens perecíveis conforme a dificuldade escolhida
-    int valCarne, valOvo, valBacon;
-    switch(dificuldade){
-        case DIFICULDADE_FACIL:
-            valCarne = 6;
-            valOvo = 5;
-            valBacon = 7;
-            break;
-        case DIFICULDADE_DIFICIL:
-            valCarne = 3;
-            valOvo = 2;
-            valBacon = 4;
-            break;
-        case DIFICULDADE_MEDIO:
-        default:
-            valCarne = 4;
-            valOvo = 3;
-            valBacon = 5;
-            break;
-    }
+    ConfiguracaoDificuldade config = configuracaoDaDificuldade(dificuldade);
+    int valCarne = config.validadeCarne;
+    int valOvo = config.validadeOvo;
+    int valBacon = config.validadeBacon;
    
     // Criar estoques
-    MinHeap carne, ovo, bacon;          // Ajustar validade dos itens perecíveis
-    inicializarHeap(&carne, valCarne);
-    inicializarHeap(&ovo, valOvo);
-    inicializarHeap(&bacon, valBacon);
+    MinHeap carne = {0}, ovo = {0}, bacon = {0};
+    if(!inicializarHeap(&carne, valCarne)
+        || !inicializarHeap(&ovo, valOvo)
+        || !inicializarHeap(&bacon, valBacon)){
+        fprintf(stderr, "Erro: falha ao inicializar o estoque de perecíveis.\n");
+        destruirEstoques(&carne, &ovo, &bacon);
+        return -1;
+    }
     
     // estoque de ingredientes não-perecíveis preparados: [0]=s, [1]=q, [2]=c, [3]=t
     int estoqueNaoPerecivel[4] = {0, 0, 0, 0};
@@ -272,19 +299,40 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
         Cliente cliente = filaClientes->frente->dados;
 
         // Cliente guarda apenas o código do pedido do cliente, que vai ser carregado apenas na hora que for a vez dele
-        buscarPedido(
-            contextoJogo->pedidosCache,
-            contextoJogo->pedidos,
-            cliente.codigoDoPedido,
-            &receita
-        );
+        if (buscarPedido(
+                contextoJogo->pedidosCache,
+                contextoJogo->pedidos,
+                cliente.codigoDoPedido,
+                &receita
+            ) != 1) {
+            fprintf(stderr, "Erro: não foi possível recuperar o pedido %d.\n", cliente.codigoDoPedido);
+            destruirEstoques(&carne, &ovo, &bacon);
+            return -1;
+        }
 
         // Hamburguer montado pelo jogador
         PilhaEnc *hamburguer = (PilhaEnc*)malloc(sizeof(PilhaEnc));
-        iniciarMontagemHamburguer(hamburguer);
+        if (hamburguer == NULL) {
+            fprintf(stderr, "Erro de memória ao iniciar a montagem do hambúrguer.\n");
+            destruirEstoques(&carne, &ovo, &bacon);
+            return -1;
+        }
+
+        if (!iniciarMontagemHamburguer(hamburguer)) {
+            fprintf(stderr, "Erro de memória ao colocar o pão inferior no prato.\n");
+            destruirMontagem(hamburguer, NULL);
+            destruirEstoques(&carne, &ovo, &bacon);
+            return -1;
+        }
 
         // Gabarito do hamburguer que o cliente pediu
         ListaEnc *hamburguerGabarito = criarPedido(receita);
+        if (hamburguerGabarito == NULL) {
+            fprintf(stderr, "Erro de memória ao criar o gabarito do pedido.\n");
+            destruirMontagem(hamburguer, NULL);
+            destruirEstoques(&carne, &ovo, &bacon);
+            return -1;
+        }
 
         // Iteração por turno
         while (
@@ -443,11 +491,14 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
                     break;
 
                 case 3: // remover ingrediente do topo: descarta no lixo, consome 1 turno se havia algo removível
-                    if(removerIngredienteHamburguer(hamburguer)){
-                        printf("\n");
-                        acaoConsumiuTurno = 1;
-                    } else{
-                        printf("\n");
+                    {
+                        char removido;
+                        if(removerIngredienteHamburguer(hamburguer, &removido)){
+                            printf("\n%s removido(a) e descartado no lixo!\n", nomeDoIngrediente(removido));
+                            acaoConsumiuTurno = 1;
+                        } else{
+                            printf("\nNenhum ingrediente a remover! Há apenas o pão inferior no prato!\n");
+                        }
                     }
                     break;
 
@@ -462,13 +513,8 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
                     break;
                     
                 case 0: // encerrar partida
-                    destruirPilha(hamburguer);
-                    free(hamburguer);
-                    destruirListaEnc(hamburguerGabarito);
-                    free(hamburguerGabarito);
-                    destruirHeap(&carne);
-                    destruirHeap(&ovo);
-                    destruirHeap(&bacon);
+                    destruirMontagem(hamburguer, hamburguerGabarito);
+                    destruirEstoques(&carne, &ovo, &bacon);
                     return 0;
                     
                 default:
@@ -478,23 +524,20 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
 
             // só avança turno e reduz paciência se uma ação válida de jogo foi executada
             if(acaoConsumiuTurno){
-                cliente.paciencia--;
-                turno++;
+                avancarTurno(&turno, &cliente);
             }
 
         }
 
+        // concluir o pedido no último ponto de paciência ainda é vitória
+        int pedidoConcluido = verificarPedido(hamburguer, hamburguerGabarito);
+
         // libera estruturas da montagem do pedido concluído
-        destruirPilha(hamburguer);
-        free(hamburguer);
-        destruirListaEnc(hamburguerGabarito);
-        free(hamburguerGabarito);
+        destruirMontagem(hamburguer, hamburguerGabarito);
 
         // se foi derrotado por falta de paciência
-        if(cliente.paciencia <= 0){
-            destruirHeap(&carne);
-            destruirHeap(&ovo);
-            destruirHeap(&bacon);
+        if(!pedidoConcluido){
+            destruirEstoques(&carne, &ovo, &bacon);
             return 0;
         }
 
@@ -504,13 +547,10 @@ int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuac
         (*pontuacao)++;
     }
 
-    destruirHeap(&carne);
-    destruirHeap(&ovo);
-    destruirHeap(&bacon);
+    destruirEstoques(&carne, &ovo, &bacon);
     return 1;
 }
 
-// Texto gerado por IA a partir do pdf do trabalho como "filler". Após finalização das mecânicas, revisar e fazer as alterações necessárias.
 void comoJogar() {
     printf("\n");
     printf("============================================================\n");
@@ -520,58 +560,58 @@ void comoJogar() {
     printf("\n");
     printf(" OBJETIVO\n");
     printf(" ------------------------------------------------------------\n");
-    printf(" Prepare os hamburgueres dos clientes seguindo exatamente\n");
+    printf(" Prepare os hambúrgueres dos clientes seguindo exatamente\n");
     printf(" a ordem de ingredientes indicada em cada pedido.\n");
-    printf(" Atenda todos os clientes antes que percam a paciencia!\n");
+    printf(" Atenda todos os clientes antes que percam a paciência!\n");
 
     printf("\n");
     printf(" INGREDIENTES\n");
     printf(" ------------------------------------------------------------\n");
-    printf("  z - Pao de cima       k - Ketchup\n");
-    printf("  m - Mostarda          p - Picles\n");
-    printf("  a - Alface            s - Queijo suico\n");
-    printf("  q - Queijo cheddar    c - Cebola\n");
-    printf("  t - Tomate            n - Carne\n");
-    printf("  o - Ovo frito         b - Bacon\n");
+    printf("  z - Pão superior          k - Ketchup\n");
+    printf("  m - Mostarda              p - Picles\n");
+    printf("  a - Alface                s - Queijo suíço\n");
+    printf("  q - Queijo cheddar        c - Cebola\n");
+    printf("  t - Tomate                n - Carne\n");
+    printf("  o - Ovo frito             b - Bacon\n");
 
     printf("\n");
-    printf(" COMO MONTAR SEU HAMBURGUER\n");
+    printf(" COMO MONTAR SEU HAMBÚRGUER\n");
     printf(" ------------------------------------------------------------\n");
-    printf(" 1. O pao inferior ja comeca automaticamente no prato.\n");
+    printf(" 1. O pão inferior já começa automaticamente no prato.\n");
     printf(" 2. Consulte o pedido do cliente atual.\n");
     printf(" 3. Prepare os ingredientes que necessitam de preparo.\n");
     printf(" 4. Adicione os ingredientes na ordem indicada,\n");
     printf("    de baixo para cima.\n");
-    printf(" 5. Finalize com o pao de cima para verificar o pedido.\n");
-    printf(" 6. Se necessario, remova ingredientes do topo.\n");
+    printf(" 5. Finalize com o pão superior para verificar o pedido.\n");
+    printf(" 6. Se necessário, remova ingredientes do topo.\n");
 
     printf("\n");
-    printf(" ACOES E TURNOS\n");
+    printf(" AÇÕES E TURNOS\n");
     printf(" ------------------------------------------------------------\n");
-    printf(" Cada uma das seguintes acoes consome 1 turno:\n");
+    printf(" Cada uma das seguintes ações consome 1 turno:\n");
     printf("  - Preparar um ingrediente.\n");
-    printf("  - Adicionar um ingrediente ao hamburguer.\n");
+    printf("  - Adicionar um ingrediente ao hambúrguer.\n");
     printf("  - Remover o ingrediente do topo.\n");
     printf("\n");
-    printf(" Consultar o pedido e verificar o estoque NAO consome turno.\n");
+    printf(" Consultar o pedido e verificar o estoque NÃO consome turno.\n");
 
     printf("\n");
-    printf(" ATENCAO!\n");
+    printf(" ATENÇÃO!\n");
     printf(" ------------------------------------------------------------\n");
-    printf("  - Os clientes sao atendidos por ordem de chegada.\n");
-    printf("  - Carne, ovo frito e bacon sao pereciveis!\n");
-    printf("  - Ingredientes vencidos sao descartados automaticamente.\n");
-    printf("  - A paciencia diminui apenas para o cliente atual,\n");
-    printf("    a cada acao realizada.\n");
+    printf("  - Os clientes são atendidos por ordem de chegada.\n");
+    printf("  - Carne, ovo frito e bacon sao perecíveis!\n");
+    printf("  - Ingredientes vencidos são descartados automaticamente.\n");
+    printf("  - A paciência diminui apenas para o cliente atual,\n");
+    printf("    a cada ação realizada.\n");
 
     printf("\n");
-    printf(" VITORIA E DERROTA\n");
+    printf(" VITÓRIA E DERROTA\n");
     printf(" ------------------------------------------------------------\n");
-    printf("  [VITORIA] Atenda todos os clientes sem perder nenhum!\n");
-    printf("  [DERROTA] A paciencia do cliente atual chegou a zero\n");
-    printf("            antes da conclusao do pedido.\n");
+    printf("  [VITÓRIA] Atenda todos os clientes sem perder nenhum!\n");
+    printf("  [DERROTA] A paciência do cliente atual chegou a zero\n");
+    printf("            antes da conclusão do pedido.\n");
     printf("\n");
-    printf(" Sua pontuacao e igual ao numero de clientes atendidos.\n");
+    printf(" Sua pontuação e igual ao número de clientes atendidos.\n");
 
     printf("\n============================================================\n");
 }
