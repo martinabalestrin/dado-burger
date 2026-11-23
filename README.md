@@ -41,6 +41,47 @@ biblioteca matemática. A instalação gráfica é opcional.
 ```bash
 ./run.sh --build-only       # build/dado_burger
 ./run-gui.sh --build-only   # build/dado_burger_gui
+## Estrutura do projeto
+
+```
+dado-burguer/
+├── src/              # código-fonte (.c e .h) — um módulo por estrutura
+│   └── main.c
+├── build/            # artefatos de compilação (ignorado no git)
+├── run.sh            # compila todos os módulos e executa o projeto
+├── .vscode/          # tasks.json (build) e launch.json (run/debug) — config local
+├── ISSUES.md         # lista de issues (espelho das issues do GitHub)
+├── trab_final.pdf    # especificação
+└── README.md
+```
+
+Os módulos (`avl.c/.h`, `hash.c/.h`, `heap.c/.h`, `pilha.c/.h`, `fila.c/.h`, `lista.c/.h`,
+`timer.c/.h`, etc.) ficam em `src/`, conforme forem sendo criados pelas issues.
+
+---
+
+## Compilação e execução
+
+Para o jogo no terminal:
+Na raiz do projeto, use o script `run.sh` (requer Bash e Clang):
+
+```bash
+# Apenas compilar, sem iniciar o programa
+./run.sh --build-only
+
+# Compilar e executar
+./run.sh pedidos_final.txt historico_final.txt
+```
+
+Para o jogo na interface gráfica:
+Na raiz do projeto, use o script `run-gui.sh` (requer Bash, Clang e raylib):
+
+```bash
+# Apenas compilar, sem iniciar o programa
+./run-gui.sh --build-only
+
+# Compilar e executar
+./run-gui.sh pedidos_final.txt historico_final.txt
 ```
 
 Para o jogo na interface gráfica:
