@@ -1,0 +1,55 @@
+{
+  "versao": "elenco-revisado-2026-11-23",
+  "origem": "Arte aprovada de clientes 02-08; clientes 03 e 05 substituidos; expressoes 06/08 atualizadas",
+  "regra_fila": "Espelhar somente no desenho da fila (raylib source.width negativo). Não gerar PNGs espelhados.",
+  "quantidade_personagens": 8,
+  "total_sprites": 32,
+  "arquivos": {
+    "piloto": "piloto_*.png",
+    "novos": "cliente_02_*.png a cliente_08_*.png"
+  },
+  "corpo_inteiro": {
+    "dimensoes": [
+      144,
+      312
+    ],
+    "ancora": [
+      72,
+      300
+    ]
+  },
+  "meio_corpo": {
+    "dimensoes": [
+      288,
+      352
+    ],
+    "ancora": [
+      144,
+      352
+    ]
+  },
+  "ancoras_fila": [
+    [
+      793,
+      482
+    ],
+    [
+      867,
+      478
+    ],
+    [
+      941,
+      474
+    ]
+  ],
+  "ancora_atendimento": [
+    411,
+    518
+  ],
+  "limiar_paciencia": {
+    "feliz": ">60%",
+    "impaciente": ">30% e <=60%",
+    "irritado": "<=30%"
+  },
+  "nota": "As atualizações 03/05/06/08 foram recortadas da prancha aprovada, que tem resolução menor que os PNGs originais. Conferir nitidez em 1280x720; caso necessário, renderizar as poses em alta resolução antes do uso definitivo."
+}
