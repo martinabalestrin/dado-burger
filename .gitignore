@@ -1,11 +1,3 @@
-# IDE — versiona tasks.json e launch.json (compartilhados), ignora config pessoal
-.vscode/*
-!.vscode/tasks.json
-!.vscode/launch.json
-
-# GitHub configuration
-.github/*
-
 # Build
 build/
 *.dSYM/

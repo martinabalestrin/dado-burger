@@ -21,10 +21,10 @@ mkdir -p "$BUILD_DIR"
 sources=()
 while IFS= read -r source; do
     sources+=("$source")
-done < <(find "$ROOT_DIR/src" -type f -name '*.c' -print | sort)
+done < <(find "$ROOT_DIR/jogo_terminal" -type f -name '*.c' -print | sort)
 
 if ((${#sources[@]} == 0)); then
-    printf 'Nenhum arquivo .c encontrado em %s/src\n' "$ROOT_DIR" >&2
+    printf 'Nenhum arquivo .c encontrado em %s/jogo_terminal\n' "$ROOT_DIR" >&2
     exit 1
 fi
 
