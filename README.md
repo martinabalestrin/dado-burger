@@ -28,6 +28,7 @@ Os módulos (`avl.c/.h`, `hash.c/.h`, `heap.c/.h`, `pilha.c/.h`, `fila.c/.h`, `l
 
 ## Compilação e execução
 
+Para o jogo no terminal:
 Na raiz do projeto, use o script `run.sh` (requer Bash e Clang):
 
 ```bash
@@ -35,7 +36,18 @@ Na raiz do projeto, use o script `run.sh` (requer Bash e Clang):
 ./run.sh --build-only
 
 # Compilar e executar
-./run.sh pedidos.txt historico.txt
+./run.sh pedidos_final.txt historico_final.txt
+```
+
+Para o jogo na interface gráfica:
+Na raiz do projeto, use o script `run-gui.sh` (requer Bash, Clang e raylib):
+
+```bash
+# Apenas compilar, sem iniciar o programa
+./run-gui.sh --build-only
+
+# Compilar e executar
+./run-gui.sh pedidos_final.txt historico_final.txt
 ```
 
 O script cria `build/` se necessário, encontra todos os arquivos `.c` em `src/`
