@@ -28,6 +28,9 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    MetricasAvl metricasAvl = {0, 0, 0.0};
+    MetricasOrdenacao metricasOrdenacao = {0, 0.0};
+
     // === Criar Timer
     Timer t;
     double tempoExecucao;
@@ -75,10 +78,16 @@ int main(int argc, char *argv[]) {
         &historico,
         &pedidosCache,
         argv[2],            // arquivo de histórico
-        nosInseridos        // quantidade de pedidos
+        nosInseridos,       // quantidade de pedidos
+        &metricasAvl,
+        &metricasOrdenacao
     };
 
     executarMenu(&contextoJogo);
+
+    inserirAvlDurantePartida(&medicoes, &metricasAvl);
+    inserirHashDurantePartida(&medicoes, &pedidosCache);
+    inserirOrdenacaoHistorico(&medicoes, &metricasOrdenacao);
 
     // Liberação de memória das estruturas criadas na main
     avlDestruir(pedidos);

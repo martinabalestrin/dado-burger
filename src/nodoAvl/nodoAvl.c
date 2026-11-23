@@ -39,7 +39,8 @@ NodoAvl* avlRotDir(NodoAvl *y, long *rotacoesInsercao) {
     y->esq = B;
     avlAtualizarAltura(y);
     avlAtualizarAltura(x);
-    (*rotacoesInsercao)++;
+    if (rotacoesInsercao != NULL)
+        (*rotacoesInsercao)++;
     return x;
 }
 
@@ -52,7 +53,8 @@ NodoAvl* avlRotEsq(NodoAvl *x, long *rotacoesInsercao) {
     x->dir = B;
     avlAtualizarAltura(x);
     avlAtualizarAltura(y);
-    (*rotacoesInsercao)++;
+    if (rotacoesInsercao != NULL)
+        (*rotacoesInsercao)++;
     return y;
 }
 
@@ -88,11 +90,22 @@ NodoAvl* avlReequilibrar(NodoAvl *raiz, long *rotacoesInsercao) {
 }
 
 // Busca: idêntica à Abp - a altura garantida torna-a O(log n)
-NodoAvl* avlBuscar(NodoAvl *raiz, int cod) {
-    if (raiz == NULL)           return NULL;
-    if (cod == raiz->dado.cod) return raiz;
-    if (cod < raiz->dado.cod)  return avlBuscar(raiz->esq, cod);
-    return avlBuscar(raiz->dir, cod);
+NodoAvl* avlBuscar(NodoAvl *raiz, int cod, MetricasAvl *m) {
+    if (raiz == NULL) {
+        return NULL;
+    }
+
+    m->comparacoes++;
+    if (cod == raiz->dado.cod) {
+        return raiz;
+    }
+
+    m->comparacoes++;
+    if (cod < raiz->dado.cod) {
+        return avlBuscar(raiz->esq, cod, m);
+    }
+
+    return avlBuscar(raiz->dir, cod, m);
 }
 
 // Inserção: descida igual à Abp; na subida, reequilibra cada ancestral.
@@ -201,7 +214,15 @@ NodoAvl* carregarPedidos(NodoAvl *raiz, char nomeArquivo[], long *nosInseridos, 
     return raiz;
 }
 
-NodoAvl* buscarPedidoAvl(NodoAvl *raiz, int codigo) {
-    NodoAvl *pedidoNodo = avlBuscar(raiz, codigo);
+NodoAvl* buscarPedidoAvl(NodoAvl *raiz, int codigo, MetricasAvl *m) {
+    m->buscas++;
+
+    Timer t;
+    timer_iniciar(&t);
+
+    NodoAvl *pedidoNodo = avlBuscar(raiz, codigo, m);
+
+    m->tempoAcumulado += timer_parar(&t);
+
     return pedidoNodo;
 }
