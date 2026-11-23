@@ -161,9 +161,9 @@ static Dificuldade selecionarDificuldade(){
     while (1) {
         limparTela();
         printf("===== SELECIONE A DIFICULDADE =====\n\n");
-        printf("1. Fácil (3 clientes | Paciência: 15 | Validade maior)\n");
-        printf("2. Médio (5 clientes | Paciência: 10 | Validade padrão)\n");
-        printf("3. Difícil (7 clientes | Paciência: 8  | Validade curta)\n\n");
+        printf("1. Fácil (3 clientes | Paciência: 15 | Validade 5 rounds)\n");
+        printf("2. Médio (5 clientes | Paciência: 13 | Validade 3 rounds)\n");
+        printf("3. Difícil (7 clientes | Paciência: 11  | Validade 1 round)\n\n");
         printf("Escolha: ");
 
         if (scanf("%d", &opcao) == 1 && opcao >= 1 && opcao <= 3) {
