@@ -55,6 +55,5 @@ void abrirHistorico(ListaContDin *historico, MetricasOrdenacao *metricasOrdenaca
 int atenderClientes(ContextoJogo *contextoJogo, Fila *filaClientes, int *pontuacao, Dificuldade dificuldade);
 void visualizarEstoque(const MinHeap *carne, const MinHeap *ovo, const MinHeap *bacon, const int estoquePreparados[4], const FilaCozimento *cozimento, int turnoAtual);
 char selecionarIngrediente(int apenasPreparaveis);
-void abrirHistorico(ListaContDin *historico);
 
 #endif
