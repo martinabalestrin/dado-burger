@@ -70,7 +70,7 @@ Na raiz do projeto, use o script `run.sh` (requer Bash e Clang):
 ./run.sh --build-only
 
 # Compilar e executar
-./run.sh pedidos_final.txt historico_final.txt
+./run.sh pedidos.txt historico.txt
 ```
 
 Para o jogo na interface gráfica:
@@ -81,7 +81,7 @@ Na raiz do projeto, use o script `run-gui.sh` (requer Bash, Clang e raylib):
 ./run-gui.sh --build-only
 
 # Compilar e executar
-./run-gui.sh pedidos_final.txt historico_final.txt
+./run-gui.sh pedidos.txt historico.txt
 ```
 
 Para o jogo na interface gráfica:
@@ -113,6 +113,7 @@ pode diferir da versão validada. O script encontra o prefixo com
 Para usar uma instalação local específica, aponte `RAYLIB_PREFIX` para o
 prefixo que contém `include/raylib.h` e `lib/libraylib.dylib` da arquitetura
 do compilador. Exemplo com o prefixo de uma instalação Homebrew:
+Por padrão, o compilador é o Clang. Para usar GCC, utilize nesse formato:
 
 ```bash
 RAYLIB_PREFIX="$(brew --prefix raylib)" ./run-gui.sh --build-only
@@ -220,3 +221,4 @@ Todas as issues seguem o mesmo fluxo:
 5. Após aprovação, merge e a branch pode ser apagada.
 
 As issues estão organizadas em **ondas** no GitHub, por *labels* e *milestones*.
+---
