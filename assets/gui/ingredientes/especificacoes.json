@@ -1,0 +1,273 @@
+{
+  "quadro": [
+    512,
+    192
+  ],
+  "formato": "RGBA 8 bits",
+  "ancora_arquivo": [
+    256,
+    160
+  ],
+  "escala_logica": 0.5,
+  "base_logica": [
+    600,
+    537
+  ],
+  "arquivos": {
+    "pao_inferior.png": {
+      "silhueta_exportacao": [
+        432,
+        76
+      ],
+      "silhueta_exibicao": [
+        216.0,
+        38.0
+      ],
+      "avanco_logico": 28,
+      "titulo": "Pão inferior",
+      "bbox_alpha": [
+        40,
+        84,
+        472,
+        160
+      ],
+      "simbolo": "i"
+    },
+    "carne.png": {
+      "silhueta_exportacao": [
+        432,
+        62
+      ],
+      "silhueta_exibicao": [
+        216.0,
+        31.0
+      ],
+      "avanco_logico": 23,
+      "titulo": "Carne",
+      "bbox_alpha": [
+        40,
+        98,
+        472,
+        160
+      ],
+      "simbolo": "n"
+    },
+    "queijo_cheddar.png": {
+      "silhueta_exportacao": [
+        444,
+        44
+      ],
+      "silhueta_exibicao": [
+        222.0,
+        22.0
+      ],
+      "avanco_logico": 13,
+      "titulo": "Cheddar",
+      "bbox_alpha": [
+        34,
+        116,
+        478,
+        160
+      ],
+      "simbolo": "q"
+    },
+    "alface.png": {
+      "silhueta_exportacao": [
+        456,
+        52
+      ],
+      "silhueta_exibicao": [
+        228.0,
+        26.0
+      ],
+      "avanco_logico": 17,
+      "titulo": "Alface",
+      "bbox_alpha": [
+        28,
+        108,
+        484,
+        160
+      ],
+      "simbolo": "a"
+    },
+    "pao_superior.png": {
+      "silhueta_exportacao": [
+        440,
+        130
+      ],
+      "silhueta_exibicao": [
+        220.0,
+        65.0
+      ],
+      "avanco_logico": null,
+      "titulo": "Pão superior",
+      "bbox_alpha": [
+        36,
+        30,
+        476,
+        160
+      ],
+      "simbolo": "z"
+    },
+    "bacon.png": {
+      "simbolo": "b",
+      "titulo": "Bacon",
+      "silhueta_exportacao": [
+        446,
+        62
+      ],
+      "silhueta_exibicao": [
+        223.0,
+        31.0
+      ],
+      "avanco_logico": 22,
+      "bbox_alpha": [
+        33,
+        98,
+        479,
+        160
+      ],
+      "origem_arte": "crispy_painterly_bacon_strips.png"
+    },
+    "ovo_frito.png": {
+      "simbolo": "o",
+      "titulo": "Ovo frito",
+      "silhueta_exportacao": [
+        432,
+        66
+      ],
+      "silhueta_exibicao": [
+        216.0,
+        33.0
+      ],
+      "avanco_logico": 21,
+      "bbox_alpha": [
+        40,
+        94,
+        471,
+        160
+      ],
+      "origem_arte": "sunny_side_egg_sprite.png"
+    },
+    "queijo_suico.png": {
+      "simbolo": "s",
+      "titulo": "Queijo suíço",
+      "silhueta_exportacao": [
+        444,
+        46
+      ],
+      "silhueta_exibicao": [
+        222.0,
+        23.0
+      ],
+      "avanco_logico": 13,
+      "bbox_alpha": [
+        34,
+        114,
+        477,
+        160
+      ],
+      "origem_arte": "swiss_cheese_slice_sprite.png"
+    },
+    "tomate.png": {
+      "simbolo": "t",
+      "titulo": "Tomate",
+      "silhueta_exportacao": [
+        440,
+        56
+      ],
+      "silhueta_exibicao": [
+        220.0,
+        28.0
+      ],
+      "avanco_logico": 17,
+      "bbox_alpha": [
+        36,
+        104,
+        476,
+        160
+      ],
+      "origem_arte": "glossy_layered_tomato_slices.png"
+    },
+    "cebola.png": {
+      "simbolo": "c",
+      "titulo": "Cebola",
+      "silhueta_exportacao": [
+        442,
+        44
+      ],
+      "silhueta_exibicao": [
+        221.0,
+        22.0
+      ],
+      "avanco_logico": 13,
+      "bbox_alpha": [
+        36,
+        116,
+        477,
+        160
+      ],
+      "origem_arte": "glossy_purple_onion_rings.png"
+    },
+    "picles.png": {
+      "simbolo": "p",
+      "titulo": "Picles",
+      "silhueta_exportacao": [
+        438,
+        52
+      ],
+      "silhueta_exibicao": [
+        219.0,
+        26.0
+      ],
+      "avanco_logico": 15,
+      "bbox_alpha": [
+        37,
+        108,
+        475,
+        160
+      ],
+      "origem_arte": "glossy_pickle_chip_layer.png"
+    },
+    "ketchup.png": {
+      "simbolo": "k",
+      "titulo": "Ketchup",
+      "silhueta_exportacao": [
+        438,
+        30
+      ],
+      "silhueta_exibicao": [
+        219.0,
+        15.0
+      ],
+      "avanco_logico": 8,
+      "bbox_alpha": [
+        38,
+        130,
+        474,
+        160
+      ],
+      "origem_arte": "glossy_ketchup_zigzag_ribbon.png"
+    },
+    "mostarda.png": {
+      "simbolo": "m",
+      "titulo": "Mostarda",
+      "silhueta_exportacao": [
+        438,
+        30
+      ],
+      "silhueta_exibicao": [
+        219.0,
+        15.0
+      ],
+      "avanco_logico": 8,
+      "bbox_alpha": [
+        37,
+        130,
+        475,
+        160
+      ],
+      "origem_arte": "glossy_mustard_sauce_squiggle.png"
+    }
+  }
+}
