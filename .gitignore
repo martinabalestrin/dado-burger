@@ -3,13 +3,6 @@ build/
 *.dSYM/
 dado_burger
 
-# Arquivos de entrada/saída (fornecidos ou gerados em runtime)
-pedidos.txt
-pedidos_final.txt
-historico.txt
-historico_final.txt
-medicoes.log
-
 # Configuration and metadata files
 *.plist
 *.yml

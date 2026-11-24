@@ -2,6 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+GUI_DIR="$ROOT_DIR/interface-grafica"
+CALLER_DIR="$PWD"
 BUILD_DIR="$ROOT_DIR/build"
 EXECUTABLE="$BUILD_DIR/dado_burger_gui"
 COMPILER="${CC:-clang}"
@@ -14,9 +16,19 @@ elif [[ $# -ne 2 ]]; then
     exit 2
 fi
 
+args=()
+if [[ "$build_only" == false ]]; then
+    for path in "$1" "$2"; do
+        case "$path" in
+            /*) args+=("$path") ;;
+            *)  args+=("$CALLER_DIR/$path") ;;
+        esac
+    done
+fi
+
 raylib_prefix="${RAYLIB_PREFIX:-}"
 if [[ -z "$raylib_prefix" ]] && command -v brew >/dev/null 2>&1; then
-    raylib_prefix="$(brew --prefix raylib)"
+    raylib_prefix="$(brew --prefix raylib 2>/dev/null || true)"
 fi
 
 if [[ -z "$raylib_prefix" || ! -f "$raylib_prefix/include/raylib.h" ||
@@ -27,14 +39,14 @@ fi
 
 mkdir -p "$BUILD_DIR"
 "$COMPILER" -Wall -std=c99 -I"$raylib_prefix/include" \
-    "$ROOT_DIR/gui/main.c" "$ROOT_DIR/gui/telas.c" "$ROOT_DIR/gui/componentes.c" \
-    "$ROOT_DIR/src/jogo/aplicacao.c" "$ROOT_DIR/src/jogo/sessao.c" \
-    "$ROOT_DIR/src/nodoAvl/nodoAvl.c" "$ROOT_DIR/src/tabelaHash/tabelaHash.c" \
-    "$ROOT_DIR/src/listaContDin/listaContDin.c" "$ROOT_DIR/src/listaEnc/listaEnc.c" \
-    "$ROOT_DIR/src/cliente/cliente.c" "$ROOT_DIR/src/fila/fila.c" \
-    "$ROOT_DIR/src/pilha/pilha.c" "$ROOT_DIR/src/heap/heap.c" \
-    "$ROOT_DIR/src/ingrediente/ingrediente.c" "$ROOT_DIR/src/medicoes/medicoes.c" \
-    "$ROOT_DIR/src/timer/timer.c" "$ROOT_DIR/src/ordenacao/ordenacaoHistorico.c" \
+    "$GUI_DIR/gui/main.c" "$GUI_DIR/gui/telas.c" "$GUI_DIR/gui/componentes.c" \
+    "$GUI_DIR/src/jogo/aplicacao.c" "$GUI_DIR/src/jogo/sessao.c" \
+    "$GUI_DIR/src/nodoAvl/nodoAvl.c" "$GUI_DIR/src/tabelaHash/tabelaHash.c" \
+    "$GUI_DIR/src/listaContDin/listaContDin.c" "$GUI_DIR/src/listaEnc/listaEnc.c" \
+    "$GUI_DIR/src/cliente/cliente.c" "$GUI_DIR/src/fila/fila.c" \
+    "$GUI_DIR/src/pilha/pilha.c" "$GUI_DIR/src/heap/heap.c" \
+    "$GUI_DIR/src/ingrediente/ingrediente.c" "$GUI_DIR/src/medicoes/medicoes.c" \
+    "$GUI_DIR/src/timer/timer.c" "$GUI_DIR/src/ordenacao/ordenacaoHistorico.c" \
     -L"$raylib_prefix/lib" -lraylib -lm -o "$EXECUTABLE"
 
 if [[ "$build_only" == true ]]; then
@@ -42,5 +54,5 @@ if [[ "$build_only" == true ]]; then
     exit 0
 fi
 
-cd "$ROOT_DIR"
-exec "$EXECUTABLE" "$@"
+cd "$GUI_DIR"
+exec "$EXECUTABLE" "${args[@]}"
